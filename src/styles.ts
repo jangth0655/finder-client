@@ -49,4 +49,19 @@ table {
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
 }
+
+input { 
+	border: none;
+	outline: none;
+}
+button { 
+	border:  none;
+	outline: none;
+	background-color:transparent ;
+}
+
+a { 
+	text-decoration: none;
+	color: inherit;
+}
 `;

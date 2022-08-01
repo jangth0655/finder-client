@@ -5,9 +5,12 @@ import "styled-components";
 declare module "styled-components" {
   export interface DefaultTheme {
     color: {
+      white: string;
+      black: string;
       bgColor: string;
       main: {
-        sm: string;
+        xs?: string;
+        sm?: string;
         base: string;
         lg: string;
         xl: string;
@@ -21,13 +24,41 @@ declare module "styled-components" {
     };
     borderRadius: {
       sm: string;
+      md: string;
       lg: string;
       xl: string;
     };
     fontSize: {
+      xs: string;
       sm: string;
       lg: string;
       xl: string;
+      xxl: string;
+      xxxl: string;
+      xxxxl: string;
     };
+    shadow: {
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+    };
+    maxWidth: {
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+    };
+    mp: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      xxl: string;
+      xxxl: string;
+      xxxxl: string;
+    };
+    transition: string;
   }
 }
