@@ -1,3 +1,4 @@
+import { UseFormRegisterReturn } from "react-hook-form";
 import styled from "styled-components";
 
 const TextAreaBox = styled.div`
@@ -10,26 +11,31 @@ const TextAreaLabel = styled.label`
   font-weight: 600;
 `;
 
-const TextAreaInput = styled.textarea`
+const TextAreaInput = styled.textarea<{ hasError?: boolean }>`
+  outline: none;
   width: 100%;
   border-radius: ${(props) => props.theme.borderRadius.md};
+  border: 1px solid
+    ${(props) =>
+      props.hasError ? props.theme.color.active.lg : props.theme.color.main.sm};
   padding: ${(props) => props.theme.mp.sm};
   margin-top: ${(props) => props.theme.mp.sm};
-  border: 1px solid ${(props) => props.theme.color.main.xs};
   box-shadow: ${(props) => props.theme.shadow.md};
   &:focus {
-    border: 2px dotted ${(props) => props.theme.color.main.sm};
+    border: 2px solid ${(props) => props.theme.color.main.sm};
   }
 `;
 
 interface TextAreaProps {
   label?: string;
+  register?: UseFormRegisterReturn;
+  hasError?: boolean;
 }
-const TextArea: React.FC<TextAreaProps> = ({ label }) => {
+const TextArea: React.FC<TextAreaProps> = ({ label, register, hasError }) => {
   return (
     <TextAreaBox>
       <TextAreaLabel>{label}</TextAreaLabel>
-      <TextAreaInput rows={8} />
+      <TextAreaInput hasError={hasError} {...register} rows={8} />
     </TextAreaBox>
   );
 };

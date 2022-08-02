@@ -67,8 +67,8 @@ const darkTheme: DefaultTheme = {
     black: "black",
     bgColor: "rgb(17 24 39)",
     main: {
-      xs: "rgb(249 250 251)",
-      sm: "rgb(243 244 246)",
+      xs: "rgb(209 213 219)",
+      sm: "rgb(107 114 128)",
       base: "rgb(229 231 235)",
       lg: "rgb(209 213 219)",
       xl: "rgb(156 163 175)",

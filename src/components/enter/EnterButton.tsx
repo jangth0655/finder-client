@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+const Button = styled.button<{ disabled?: boolean }>`
   background-color: ${(props) => props.theme.color.active.sm};
   border-radius: ${(props) => props.theme.borderRadius.md};
   color: ${(props) => props.theme.color.white};
@@ -12,6 +12,7 @@ const Button = styled.button`
   font-weight: 700;
   transition: ${(props) => props.theme.transition};
   box-shadow: ${(props) => props.theme.shadow.md};
+  opacity: ${(props) => (props.disabled ? "0.5" : "1")};
   &:hover {
     background-color: ${(props) => props.theme.color.active.base};
   }
@@ -20,9 +21,14 @@ const Button = styled.button`
 interface EnterButtonProps {
   text: string;
   loading?: boolean;
+  disabled?: boolean;
 }
 
-const EnterButton: React.FC<EnterButtonProps> = ({ text, loading }) => {
-  return <Button>Sign Up</Button>;
+const EnterButton: React.FC<EnterButtonProps> = ({
+  text,
+  loading,
+  disabled,
+}) => {
+  return <Button disabled={disabled}>{loading ? "loading" : text}</Button>;
 };
 export default EnterButton;
