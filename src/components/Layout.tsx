@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion, Variants } from "framer-motion";
+import Search from "./Search";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -159,7 +160,7 @@ const activeNavVar: Variants = {
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const navigate = useNavigate();
-  const uploadMatch = useMatch("/users/upload");
+  const uploadMatch = useMatch("/shops/upload");
   const profileMatch = useMatch("/users/profile");
   const { windowSize } = WindowSize();
   const [active, setActiv] = useState(false);
@@ -190,9 +191,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
             <span>Finder</span>
           </Title>
         </ColLeft>
+        <Search />
         {windowSize > 768 ? (
           <ColRight>
-            <Link to={"/users/upload"}>
+            <Link to={"/shops/upload"}>
               <LinkUpload>
                 Upload
                 {uploadMatch && <Mark layoutId="circle" />}

@@ -10,8 +10,9 @@ import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./theme";
 import { GlobalStyle } from "./styles";
 import Profile from "./screen/users/profile";
-import Upload from "./screen/users/upload";
+import Upload from "./screen/shops/upload";
 import NotFoundPage from "./screen/NotFound";
+import SearchItems from "./screen/shops/searchItems";
 
 function App() {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
@@ -31,6 +32,7 @@ function App() {
           <Route path={routes.login} element={<Login />} />
           <Route path={routes.profile} element={<Profile />} />
           <Route path={routes.upload} element={<Upload />} />
+          <Route path={routes.search} element={<SearchItems />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
