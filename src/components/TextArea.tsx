@@ -12,6 +12,7 @@ const TextAreaLabel = styled.label`
 `;
 
 const TextAreaInput = styled.textarea<{ hasError?: boolean }>`
+  color: ${(props) => props.theme.color.main.base};
   outline: none;
   width: 100%;
   border-radius: ${(props) => props.theme.borderRadius.md};

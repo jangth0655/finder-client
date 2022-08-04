@@ -6,6 +6,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { NavigateFunction } from "react-router-dom";
+import { createUploadLink } from "apollo-upload-client";
 
 const TOKEN = "TOKEN";
 const DARK_MODE = "DARK_MODE";
@@ -34,7 +35,11 @@ export const logUserOut = (navigate: NavigateFunction) => {
   navigate("/", { replace: true });
 };
 
-const httpLink = createHttpLink({
+// const httpLink = createHttpLink({
+//   uri: `http://localhost:4000/graphql`,
+// });
+
+const uploadHttpLink = createUploadLink({
   uri: `http://localhost:4000/graphql`,
 });
 
@@ -48,7 +53,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadHttpLink),
   cache: new InMemoryCache(),
 });
 

@@ -7,6 +7,7 @@ const InputBox = styled.div`
   width: 100%;
 `;
 const Input = styled.input<{ hasError?: boolean }>`
+  color: ${(props) => props.theme.color.main.base};
   border-radius: ${(props) => props.theme.borderRadius.md};
   border: 1px solid
     ${(props) =>

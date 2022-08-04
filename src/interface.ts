@@ -15,4 +15,18 @@ export interface Shop {
 
 export interface Photo {}
 
-export interface User {}
+export interface User {
+  id: number;
+  createdAt: string;
+  updatedA: string;
+  email: string;
+  username: string;
+  password: string;
+  avatar: string;
+  bio: string;
+  careers: string;
+  region: string;
+  phone: string;
+  name: string;
+  isMe: boolean;
+}

@@ -9,6 +9,8 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import Search from "./Search";
+import useUser from "../libs/useUser";
+import { logUserOut } from "../apollo";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -62,6 +64,7 @@ const LinkSpan = styled.span`
   transition: ${(props) => props.theme.transition};
   font-size: ${(props) => props.theme.fontSize.lg};
   color: ${(props) => props.theme.color.active.sm};
+  cursor: pointer;
   &:hover {
     color: ${(props) => props.theme.color.active.base};
   }
@@ -69,11 +72,12 @@ const LinkSpan = styled.span`
 
 const LinkProfile = styled(LinkSpan)`
   display: inline-block;
-  margin: 0 ${(props) => props.theme.mp.xxl};
-  cursor: pointer;
+  margin: 0 ${(props) => props.theme.mp.sm};
 `;
-const LinkUpload = styled(LinkSpan)`
-  cursor: pointer;
+const LinkUpload = styled(LinkSpan)``;
+
+const LinkLogOut = styled(LinkSpan)`
+  margin-right: ${(props) => props.theme.mp.sm};
 `;
 
 const AvatarBox = styled.div`
@@ -164,6 +168,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const profileMatch = useMatch("/users/profile");
   const { windowSize } = WindowSize();
   const [active, setActiv] = useState(false);
+  const { user } = useUser({ isPrivate: false });
 
   const onHome = () => {
     navigate("/");
@@ -205,6 +210,13 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                 Profile {profileMatch && <Mark layoutId="circle" />}
               </LinkProfile>
             </Link>
+            {user?.isMe && (
+              <Link to={"/"}>
+                <LinkLogOut onClick={() => logUserOut(navigate)}>
+                  LogOut
+                </LinkLogOut>
+              </Link>
+            )}
             <AvatarBox onClick={() => onProfile()}>
               {false ? (
                 <Avatar src={logo} />
@@ -233,6 +245,11 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
               </Link>
               <Link to={"/users/profile"}>
                 <LinkProfile>Profile</LinkProfile>
+              </Link>
+              <Link to={"/"}>
+                <LinkLogOut onClick={() => logUserOut(navigate)}>
+                  LogOut
+                </LinkLogOut>
               </Link>
             </ActiveLayer>
           </LayerBox>
