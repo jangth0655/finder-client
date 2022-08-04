@@ -57,6 +57,12 @@ const lightTheme: DefaultTheme = {
     xxxxl: "3.5rem",
   },
   transition: "all 180ms cubic-bezier(0.4, 0, 0.2, 1)",
+  respnosive: {
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+    xl: "1280px",
+  },
 };
 
 export { lightTheme };
@@ -118,6 +124,12 @@ const darkTheme: DefaultTheme = {
     xxxxl: "3.5rem",
   },
   transition: "all 180ms cubic-bezier(0.4, 0, 0.2, 1)",
+  respnosive: {
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+    xl: "1280px",
+  },
 };
 
 export { darkTheme };

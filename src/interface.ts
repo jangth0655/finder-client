@@ -11,14 +11,17 @@ export interface Shop {
   comments: string;
   user: User;
   isMine: boolean;
+  isLike: boolean;
 }
 
-export interface Photo {}
+export interface Photo {
+  url: string;
+}
 
 export interface User {
   id: number;
-  createdAt: string;
-  updatedA: string;
+  createdAt: Date;
+  updatedA: Date;
   email: string;
   username: string;
   password: string;

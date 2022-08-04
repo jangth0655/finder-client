@@ -205,7 +205,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                 {uploadMatch && <Mark layoutId="circle" />}
               </LinkUpload>
             </Link>
-            <Link to={"/users/profile"}>
+            <Link
+              to={"/users/profile"}
+              state={{ username: user?.username, id: user?.id }}
+            >
               <LinkProfile>
                 Profile {profileMatch && <Mark layoutId="circle" />}
               </LinkProfile>
@@ -243,7 +246,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
               <Link to={"/users/upload"}>
                 <LinkUpload>Upload</LinkUpload>
               </Link>
-              <Link to={"/users/profile"}>
+              <Link
+                to={"/users/profile"}
+                state={{ username: user?.username, id: user?.id }}
+              >
                 <LinkProfile>Profile</LinkProfile>
               </Link>
               <Link to={"/"}>

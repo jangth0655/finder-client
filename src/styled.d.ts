@@ -60,5 +60,11 @@ declare module "styled-components" {
       xxxxl: string;
     };
     transition: string;
+    respnosive: {
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+    };
   }
 }

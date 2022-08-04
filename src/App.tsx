@@ -13,6 +13,8 @@ import Profile from "./screen/users/profile";
 import Upload from "./screen/shops/upload";
 import NotFoundPage from "./screen/NotFound";
 import SearchItems from "./screen/shops/searchItems";
+import EditProfile from "./screen/users/edit";
+import AboutShop from "./screen/shops/aboutShop";
 
 function App() {
   const isLoggedIn = useReactiveVar(isLoggedInVar);
@@ -33,6 +35,8 @@ function App() {
           <Route path={routes.profile} element={<Profile />} />
           <Route path={routes.upload} element={<Upload />} />
           <Route path={routes.search} element={<SearchItems />} />
+          <Route path={routes.editProfile} element={<EditProfile />} />
+          <Route path="/shops/about/:id" element={<AboutShop />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

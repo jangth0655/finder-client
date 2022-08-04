@@ -52,7 +52,7 @@ const UploadImageBox = styled.div`
   flex-direction: column;
   margin: auto;
   margin-bottom: ${(props) => props.theme.mp.md};
-  width: 24rem;
+  width: 50%;
   height: 24rem;
 `;
 const UploadImageLabel = styled.label`
@@ -119,12 +119,6 @@ const Reset = styled.span`
   }
 `;
 
-const SelectImage = styled.div`
-  input {
-    display: none;
-  }
-`;
-
 interface IUploadForm {
   url: FileList;
   website: string;
@@ -164,12 +158,9 @@ const Upload: React.FC = () => {
       setError("error", { message: error });
     }
   };
-  const [upload, { loading, data }] = useMutation<UploadMutation>(
-    UPLOAD_MUTATION,
-    {
-      onCompleted,
-    }
-  );
+  const [upload, { loading }] = useMutation<UploadMutation>(UPLOAD_MUTATION, {
+    onCompleted,
+  });
 
   const errorStateMessage =
     errors.description?.message ||
@@ -192,7 +183,6 @@ const Upload: React.FC = () => {
       file = url[0];
     }
     if (loading) return;
-    console.log(file);
     upload({
       variables: {
         url: file ? file : null,

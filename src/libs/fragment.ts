@@ -7,3 +7,14 @@ export const USER_FRAGMENT = gql`
     avatar
   }
 `;
+
+export const SHOP_FRAGMENT = gql`
+  fragment ShopFragemnt on Shop {
+    id
+    name
+    slug
+    isMine
+    isLike
+    favCount
+  }
+`;
