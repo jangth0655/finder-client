@@ -1,7 +1,7 @@
 export interface Shop {
   id: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   website: string;
   region: string;
   description: string;
@@ -12,6 +12,7 @@ export interface Shop {
   user: User;
   isMine: boolean;
   isLike: boolean;
+  favCount: number;
 }
 
 export interface Photo {
@@ -32,4 +33,8 @@ export interface User {
   phone: string;
   name: string;
   isMe: boolean;
+  isFollowing: boolean;
+  totalFollowing: number;
+  totalFollowers: number;
+  seeFollowers: User[];
 }

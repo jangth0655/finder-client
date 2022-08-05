@@ -5,7 +5,7 @@ import EnterInput from "../components/enter/EnterInput";
 import EnterLayout from "../components/enter/EnterLayout";
 import EnterTitleBox from "../components/enter/EnterTitleBox";
 import EnterToggleLink from "../components/enter/EnterToggleLink";
-import TextArea from "../components/TextArea";
+import TextArea from "../components/shared/TextArea";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../components/shared/ErrorMessage";
 import { gql, useMutation } from "@apollo/client";

@@ -3,12 +3,13 @@ import styled from "styled-components";
 import Layout from "../../components/Layout";
 import UploadImage from "../../assets/images/upload.png";
 import EnterInput from "../../components/enter/EnterInput";
-import TextArea from "../../components/TextArea";
+import TextArea from "../../components/shared/TextArea";
 import EnterButton from "../../components/enter/EnterButton";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import ErrorMessage from "../../components/shared/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import { SmallBurtton } from "../../components/shared/Shared";
 
 const UPLOAD_MUTATION = gql`
   mutation createShops(
@@ -100,23 +101,6 @@ const SelectBox = styled.div`
   width: 40%;
   margin-bottom: ${(props) => props.theme.mp.xl};
   margin-top: ${(props) => props.theme.mp.sm};
-`;
-const Reset = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: ${(props) => props.theme.mp.sm};
-  background-color: ${(props) => props.theme.color.active.sm};
-  border-radius: ${(props) => props.theme.borderRadius.md};
-  transition: ${(props) => props.theme.transition};
-  color: white;
-  width: 100%;
-  margin: auto;
-  cursor: pointer;
-  font-weight: 600;
-  &:hover {
-    background-color: ${(props) => props.theme.color.active.base};
-  }
 `;
 
 interface IUploadForm {
@@ -229,7 +213,7 @@ const Upload: React.FC = () => {
             />
           </UploadImageLabel>
           <SelectBox>
-            <Reset onClick={onReset}>Reset</Reset>
+            <SmallBurtton onClick={onReset}>Reset</SmallBurtton>
           </SelectBox>
         </UploadImageBox>
 

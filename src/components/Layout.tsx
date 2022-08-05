@@ -84,17 +84,21 @@ const AvatarBox = styled.div`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 100%;
-  color: ${(props) => props.theme.color.active.lg};
-  background-color: ${(props) => props.theme.color.active.sm};
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
 `;
 const Avatar = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 100%;
+`;
+
+const NoAvatarBox = styled(AvatarBox)`
+  color: ${(props) => props.theme.color.active.lg};
+  background-color: ${(props) => props.theme.color.active.sm};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const BarIcon = styled.div`
@@ -220,13 +224,15 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                 </LinkLogOut>
               </Link>
             )}
-            <AvatarBox onClick={() => onProfile()}>
-              {false ? (
-                <Avatar src={logo} />
-              ) : (
+            {user?.avatar ? (
+              <AvatarBox onClick={() => onProfile()}>
+                <Avatar src={user?.avatar} />
+              </AvatarBox>
+            ) : (
+              <NoAvatarBox onClick={() => onProfile()}>
                 <FontAwesomeIcon icon={faUser} />
-              )}
-            </AvatarBox>
+              </NoAvatarBox>
+            )}
           </ColRight>
         ) : (
           <BarIcon onClick={() => onActive()}>

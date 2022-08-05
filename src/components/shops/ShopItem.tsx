@@ -64,7 +64,10 @@ const ShopFav = styled.div<{ like: boolean }>`
     color: ${(props) => props.theme.color.active.sm};
   }
 `;
-const ShopFavSpan = styled.span``;
+const ShopFavSpan = styled.span`
+  font-size: ${(props) => props.theme.fontSize.sm};
+  margin-left: ${(props) => props.theme.mp.sm};
+`;
 
 interface ShopItemProps {
   shop: Shop;
@@ -93,7 +96,7 @@ const ShopItem: React.FC<ShopItemProps> = ({ shop }) => {
           <ShopFav like={shop.isLike}>
             <FontAwesomeIcon icon={faHeart} />
           </ShopFav>
-          <ShopFavSpan></ShopFavSpan>
+          <ShopFavSpan>{shop.favCount}</ShopFavSpan>
         </ShopFavBox>
       </ShopInfo>
     </ShopBox>

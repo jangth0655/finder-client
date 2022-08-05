@@ -26,12 +26,11 @@ const useUser = ({ isPrivate }: UseUserProps) => {
   const { loading, error, data } = useQuery<Me>(ME_QUERY);
 
   useEffect(() => {
-    if (isPrivate) {
-      if (!data?.me.id) {
-        navigate("/enter", { replace: true });
-      }
+    if (isPrivate && !data?.me) {
+      navigate("/", { replace: true });
+      return;
     }
-  }, [data?.me.id, isPrivate, navigate]);
+  }, [data?.me, isPrivate, navigate]);
 
   return { loading, error, user: data?.me };
 };

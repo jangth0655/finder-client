@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Shop } from "../../interface";
 import { FavShopObject } from "../../screen/users/profile";
+
 import ShopItem from "./ShopItem";
 
 const Main = styled.main`
@@ -23,12 +24,14 @@ interface ShopItemsProps {
 
 const ShopItems: React.FC<ShopItemsProps> = ({ shops, favShops }) => {
   return (
-    <Main>
-      {shops && shops.map((shop) => <ShopItem key={shop.id} shop={shop} />)}
-      {favShops?.map((shop) => (
-        <ShopItem key={shop.shop.id} shop={shop.shop} />
-      ))}
-    </Main>
+    <>
+      <Main>
+        {shops && shops.map((shop) => <ShopItem key={shop.id} shop={shop} />)}
+        {favShops?.map((shop) => (
+          <ShopItem key={shop.shop.id} shop={shop.shop} />
+        ))}
+      </Main>
+    </>
   );
 };
 export default ShopItems;

@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { ApolloCache, gql, useMutation, useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,11 +8,17 @@ import ShopItems from "../../components/shops/ShopItems";
 import { Shop, User } from "../../interface";
 import { dateFormate } from "../../libs/dateFormat";
 import { SHOP_FRAGMENT, USER_FRAGMENT } from "../../libs/fragment";
+import IsAvatar from "../../components/shared/IsAvatar";
+import { Border } from "../../components/shared/Shared";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import Followers from "../../components/followers/Followers";
+import Pagination from "../../components/shared/Pagination";
 
 const SEE_PROFILE = gql`
   ${USER_FRAGMENT}
   ${SHOP_FRAGMENT}
-  query seeProfile($username: String!) {
+  query seeProfile($username: String!, $page: Int) {
     seeProfile(username: $username) {
       ok
       error
@@ -20,7 +26,8 @@ const SEE_PROFILE = gql`
         ...UserFragment
         name
         createdAt
-        shops {
+        isFollowing
+        shops(page: $page) {
           ...ShopFragemnt
           photos {
             url
@@ -33,8 +40,8 @@ const SEE_PROFILE = gql`
 
 const FAV_SHOPS = gql`
   ${SHOP_FRAGMENT}
-  query favShops($id: Int!) {
-    favShops(id: $id) {
+  query favShops($id: Int!, $page: Int) {
+    favShops(id: $id, page: $page) {
       ok
       error
       shops {
@@ -49,6 +56,15 @@ const FAV_SHOPS = gql`
   }
 `;
 
+const FOLLOWER_USER = gql`
+  mutation followUser($username: String!) {
+    followUser(username: $username) {
+      ok
+      error
+    }
+  }
+`;
+
 const MainSection = styled.section``;
 
 const UserSection = styled.section`
@@ -57,20 +73,50 @@ const UserSection = styled.section`
   align-items: center;
   width: 100%;
 `;
-const AvatarBox = styled.div`
-  width: 10rem;
-  height: 10rem;
-  margin-right: ${(props) => props.theme.mp.lg};
-`;
-const Avatar = styled.img`
-  width: 100%;
-  height: 100%;
-`;
+
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const UsernameBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const FollowerBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Follower = styled.span`
+  color: ${(props) => props.theme.color.active.base};
+  font-size: ${(prosp) => prosp.theme.fontSize.xs};
+  margin-bottom: ${(props) => props.theme.mp.sm};
+`;
+const FollowerIcon = styled.div<{ isFollowing?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 100%;
+  background-color: ${(props) =>
+    props.isFollowing
+      ? props.theme.color.active.xl
+      : props.theme.color.active.sm};
+  transition: ${(props) => props.theme.transition};
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.color.active.xl};
+  }
+`;
+
 const Username = styled.span`
+  margin-right: ${(props) => props.theme.mp.md};
   color: ${(props) => props.theme.color.main.xl};
   font-weight: 700;
   font-size: ${(props) => props.theme.fontSize.xxl};
@@ -84,6 +130,7 @@ const CreatedAt = styled.span`
   color: ${(props) => props.theme.color.main.base};
 `;
 const EditBox = styled.div`
+  width: 50%;
   margin-top: ${(props) => props.theme.mp.md};
   background-color: ${(props) => props.theme.color.active.sm};
   color: white;
@@ -112,13 +159,7 @@ const ShopSectionTitle = styled.span`
     color: ${(props) => props.theme.color.active.base};
   }
 `;
-const Border = styled.div`
-  height: 1px;
-  width: 100%;
-  background-color: ${(props) => props.theme.color.active.sm};
-  margin-top: ${(props) => props.theme.mp.md};
-  margin-bottom: ${(props) => props.theme.mp.xxl};
-`;
+
 const Shops = styled.div``;
 
 const Mark = styled(motion.div)`
@@ -161,12 +202,21 @@ interface LocationState {
   id: number;
 }
 
+interface FollowerUserMutation {
+  followUser: {
+    ok: boolean;
+    error?: string;
+  };
+}
+
 const shopSectionTitle = [
   { title: "Shops", id: "seeProfile" },
   { title: "Favorite", id: "favShops" },
+  { title: "Followers", id: "follower" },
 ];
 
 const Profile: React.FC = () => {
+  const [page, setPage] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
   const [selectTitle, setSelectTitle] = useState("Shops");
@@ -174,6 +224,7 @@ const Profile: React.FC = () => {
   const { data: profileData, loading } = useQuery<SeeProfile>(SEE_PROFILE, {
     variables: {
       username: username && username,
+      page,
     },
   });
 
@@ -182,6 +233,47 @@ const Profile: React.FC = () => {
       id: id && id,
     },
   });
+
+  const updateToggleFollower = (cache: ApolloCache<any>, result: any) => {
+    const {
+      data: {
+        followUser: { ok },
+      },
+    } = result;
+    if (ok) {
+      const fragmentId = `User:${id}`;
+      const fragment = gql`
+        fragment BSName on User {
+          isFollowing
+        }
+      `;
+      const resultFragemnt: any = cache.readFragment({
+        id: fragmentId,
+        fragment,
+      });
+      if ("isFollowing" in resultFragemnt) {
+        const { isFollowing } = resultFragemnt;
+        cache.writeFragment({
+          id: fragmentId,
+          fragment,
+          data: {
+            isFollowing: !isFollowing,
+          },
+        });
+      }
+    }
+  };
+  const [following] = useMutation<FollowerUserMutation>(FOLLOWER_USER, {
+    update: updateToggleFollower,
+  });
+
+  const onFollowing = (username: string) => {
+    following({
+      variables: {
+        username,
+      },
+    });
+  };
 
   const onEditProfile = () => {
     navigate("/users/edit");
@@ -198,11 +290,20 @@ const Profile: React.FC = () => {
       ) : (
         <MainSection>
           <UserSection>
-            <AvatarBox>
-              <Avatar src={profileData?.seeProfile.user.avatar} />
-            </AvatarBox>
+            <IsAvatar avatar={profileData?.seeProfile.user.avatar} />
             <InfoBox>
-              <Username>{username}</Username>
+              <UsernameBox>
+                <Username>{username}</Username>
+                <FollowerBox>
+                  <Follower>Follower</Follower>
+                  <FollowerIcon
+                    onClick={() => onFollowing(username)}
+                    isFollowing={profileData?.seeProfile.user.isFollowing}
+                  >
+                    <FontAwesomeIcon icon={faCheck} />
+                  </FollowerIcon>
+                </FollowerBox>
+              </UsernameBox>
               <Name>{profileData?.seeProfile.user.name}</Name>
               <CreatedAt>
                 {dateFormate(profileData?.seeProfile?.user.createdAt)}
@@ -225,11 +326,26 @@ const Profile: React.FC = () => {
             <Border />
             <Shops>
               {selectTitle === "Shops" && (
-                <ShopItems shops={profileData?.seeProfile.user.shops} />
+                <>
+                  <ShopItems shops={profileData?.seeProfile.user.shops} />
+                  <Pagination
+                    page={page}
+                    setPage={setPage}
+                    totalLength={profileData?.seeProfile.user.shops.length}
+                  />
+                </>
               )}
               {selectTitle === "Favorite" && (
-                <ShopItems favShops={favShopsData?.favShops.shops} />
+                <>
+                  <ShopItems favShops={favShopsData?.favShops.shops} />
+                  <Pagination
+                    page={page}
+                    setPage={setPage}
+                    totalLength={favShopsData?.favShops.shops.length}
+                  />
+                </>
               )}
+              {selectTitle === "Followers" && <Followers username={username} />}
             </Shops>
           </ShopSection>
         </MainSection>
