@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -7,7 +7,14 @@ import WindowSize from "./shared/WindowSize";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  AnimatePresence,
+  motion,
+  useAnimation,
+  useViewportScroll,
+  Variants,
+} from "framer-motion";
 import Search from "./Search";
 import useUser from "../libs/useUser";
 import { logUserOut } from "../apollo";
@@ -151,6 +158,26 @@ const Mark = styled(motion.span)`
   margin: auto;
 `;
 
+const GoTop = styled(motion.div)`
+  color: white;
+  padding: ${(props) => props.theme.mp.sm};
+  width: 1.7rem;
+  height: 1.7rem;
+  background-color: ${(props) => props.theme.color.active.sm};
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  cursor: pointer;
+  transition: ${(props) => props.theme.transition};
+  &:hover {
+    background-color: ${(props) => props.theme.color.active.lg};
+  }
+`;
+
 const activeNavVar: Variants = {
   initial: {
     scaleY: 0,
@@ -166,6 +193,15 @@ const activeNavVar: Variants = {
   },
 };
 
+const scrollVariant: Variants = {
+  top: {
+    opacity: 0,
+  },
+  scroll: {
+    opacity: 1,
+  },
+};
+
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const navigate = useNavigate();
   const uploadMatch = useMatch("/shops/upload");
@@ -173,6 +209,29 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   const { windowSize } = WindowSize();
   const [active, setActiv] = useState(false);
   const { user } = useUser({ isPrivate: false });
+  const navRef = useRef<HTMLDivElement>(null);
+  const scrollAnimation = useAnimation();
+  const { scrollY } = useViewportScroll();
+
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() < window.innerHeight / 2) {
+        scrollAnimation.start("top");
+      } else {
+        scrollAnimation.start("scroll");
+      }
+    });
+  }, [scrollY, scrollAnimation]);
+
+  useEffect(() => {
+    if (navRef) {
+      navRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
+  const onTop = () => {
+    navRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const onHome = () => {
     navigate("/");
@@ -191,7 +250,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
       <Helmet>
         <title>{`${title} | Finder`}</title>
       </Helmet>
-      <Nav>
+      <Nav ref={navRef}>
         <ColLeft>
           <LogoBox onClick={() => onHome()}>
             <Logo src={logo} />
@@ -267,7 +326,17 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
           </LayerBox>
         )}
       </AnimatePresence>
-      <Main onClick={() => setActiv(false)}>{children}</Main>
+      <Main onClick={() => setActiv(false)}>
+        {children}
+        <GoTop
+          onClick={onTop}
+          variants={scrollVariant}
+          initial="top"
+          animate={scrollAnimation}
+        >
+          <FontAwesomeIcon icon={faArrowUp} />
+        </GoTop>
+      </Main>
     </Section>
   );
 };

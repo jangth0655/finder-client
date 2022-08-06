@@ -137,7 +137,11 @@ interface FavToggleMutation {
 const HomeAndSearchShop: React.FC<MainShopProps> = ({ shop, id }) => {
   const navigate = useNavigate();
   const onDetail = (id: number) => {
-    navigate(`/shops/about/${id}`);
+    navigate(`/shops/about/${id}`, {
+      state: {
+        id,
+      },
+    });
   };
 
   const favToggleUpdate = (cache: ApolloCache<any>, result: any) => {

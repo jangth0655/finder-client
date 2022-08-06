@@ -76,7 +76,11 @@ interface ShopItemProps {
 const ShopItem: React.FC<ShopItemProps> = ({ shop }) => {
   const navigate = useNavigate();
   const onDetailShop = (id: number) => {
-    navigate(`/shops/about/${id}`);
+    navigate(`/shops/about/${id}`, {
+      state: {
+        id,
+      },
+    });
   };
 
   return (
