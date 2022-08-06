@@ -237,8 +237,13 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
     navigate("/");
   };
 
-  const onProfile = () => {
-    navigate("/users/profile");
+  const onProfile = (id?: number, username?: string) => {
+    navigate(`/users/profile/${id}`, {
+      state: {
+        id,
+        username,
+      },
+    });
   };
 
   const onActive = () => {
@@ -269,7 +274,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
               </LinkUpload>
             </Link>
             <Link
-              to={"/users/profile"}
+              to={`/users/profile/${user?.id}`}
               state={{ username: user?.username, id: user?.id }}
             >
               <LinkProfile>
@@ -284,11 +289,11 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
               </Link>
             )}
             {user?.avatar ? (
-              <AvatarBox onClick={() => onProfile()}>
+              <AvatarBox onClick={() => onProfile(user?.id, user?.username)}>
                 <Avatar src={user?.avatar} />
               </AvatarBox>
             ) : (
-              <NoAvatarBox onClick={() => onProfile()}>
+              <NoAvatarBox onClick={() => onProfile(user?.id, user?.username)}>
                 <FontAwesomeIcon icon={faUser} />
               </NoAvatarBox>
             )}

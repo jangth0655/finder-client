@@ -23,7 +23,6 @@ const ShopBox = styled.div`
   box-shadow: ${(props) => props.theme.shadow.md};
   margin-bottom: 5rem;
   padding: 0 ${(props) => props.theme.mp.sm};
-  cursor: pointer;
 `;
 
 const LeftCol = styled.div`
@@ -136,10 +135,12 @@ interface FavToggleMutation {
 
 const HomeAndSearchShop: React.FC<MainShopProps> = ({ shop, id }) => {
   const navigate = useNavigate();
-  const onDetail = (id: number) => {
+
+  const onDetail = (id: number, name?: string) => {
     navigate(`/shops/about/${id}`, {
       state: {
         id,
+        name,
       },
     });
   };
@@ -176,12 +177,13 @@ const HomeAndSearchShop: React.FC<MainShopProps> = ({ shop, id }) => {
     });
   };
 
+  const latestId = shop.photos.length - 1;
   return (
     <ShopBox key={shop.id}>
       <LeftCol>
         <PhotoImageBox>
           {shop.photos[0] ? (
-            <PhotoImage src={shop?.photos[0]?.url} />
+            <PhotoImage src={shop?.photos[latestId]?.url} />
           ) : (
             <NoPhoto>
               <span>Shop</span>
@@ -201,7 +203,7 @@ const HomeAndSearchShop: React.FC<MainShopProps> = ({ shop, id }) => {
       </LeftCol>
 
       <RightCol>
-        <GoShop onClick={() => onDetail(shop.id)}>
+        <GoShop onClick={() => onDetail(shop.id, shop.name)}>
           <span>About Shop</span>
         </GoShop>
         <FavIcon isLike={shop.isLike} onClick={() => onFav(shop.id)}>

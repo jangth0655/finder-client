@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Pagination from "../shared/Pagination";
+import { useNavigate } from "react-router-dom";
 
 const SEE_FOLLOWERS = gql`
   query seeFollowers($username: String!, $page: Int) {
@@ -26,6 +27,7 @@ const ItemBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: ${(props) => props.theme.mp.xxxxl};
+  cursor: pointer;
 `;
 const AvatarBox = styled.div`
   width: 2.5rem;
@@ -67,6 +69,7 @@ interface SeeFollowerResponse {
 }
 
 const Followers: React.FC<SeeProfileProps> = ({ username }) => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { data } = useQuery<SeeFollowerResponse>(SEE_FOLLOWERS, {
     variables: {
@@ -75,11 +78,23 @@ const Followers: React.FC<SeeProfileProps> = ({ username }) => {
     },
   });
 
+  const onProfile = (id?: number, username?: string) => {
+    navigate(`/users/profile/${id}`, {
+      state: {
+        id,
+        username,
+      },
+    });
+  };
+
   return (
     <>
       <Main>
         {data?.seeFollowers.users.map((user) => (
-          <ItemBox key={user.id}>
+          <ItemBox
+            onClick={() => onProfile(user?.id, user?.username)}
+            key={user.id}
+          >
             <AvatarBox>
               {user.avatar ? (
                 <Avatar src={user.avatar} alt="" />

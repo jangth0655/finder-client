@@ -13,10 +13,12 @@ export interface Shop {
   isMine: boolean;
   isLike: boolean;
   favCount: number;
+  phone: string;
 }
 
 export interface Photo {
   url: string;
+  id: number;
 }
 
 export interface User {

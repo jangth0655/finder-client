@@ -75,16 +75,17 @@ interface ShopItemProps {
 
 const ShopItem: React.FC<ShopItemProps> = ({ shop }) => {
   const navigate = useNavigate();
-  const onDetailShop = (id: number) => {
+  const onDetailShop = (id: number, name?: string) => {
     navigate(`/shops/about/${id}`, {
       state: {
         id,
+        name,
       },
     });
   };
 
   return (
-    <ShopBox onClick={() => onDetailShop(shop.id)}>
+    <ShopBox onClick={() => onDetailShop(shop.id, shop.name)}>
       {shop.photos[0] ? (
         <ShopImageBox isPhoto={Boolean(shop.photos[0].url)}>
           <ShopImage url={shop.photos[0].url} />
