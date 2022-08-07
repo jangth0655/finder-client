@@ -131,6 +131,9 @@ const CreatedAt = styled.span`
 `;
 const EditBox = styled.div`
   width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: ${(props) => props.theme.mp.md};
   background-color: ${(props) => props.theme.color.active.sm};
   color: white;
@@ -309,7 +312,7 @@ const Profile: React.FC = () => {
                 {dateFormate(profileData?.seeProfile?.user.createdAt)}
               </CreatedAt>
               {profileData?.seeProfile.user.isMe && (
-                <EditBox onClick={onEditProfile}>Edit Profile</EditBox>
+                <EditBox onClick={onEditProfile}>Edit</EditBox>
               )}
             </InfoBox>
           </UserSection>

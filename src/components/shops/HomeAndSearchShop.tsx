@@ -107,6 +107,7 @@ const GoShop = styled.div`
   padding: ${(prosp) => prosp.theme.mp.xs};
   border-radius: ${(props) => props.theme.borderRadius.md};
   transition: ${(props) => props.theme.transition};
+  cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.color.active.lg};
   }

@@ -8,7 +8,7 @@ export interface Shop {
   name: string;
   slug: string;
   photos: Photo[];
-  comments: string;
+  comments: Comment[];
   user: User;
   isMine: boolean;
   isLike: boolean;
@@ -39,4 +39,12 @@ export interface User {
   totalFollowing: number;
   totalFollowers: number;
   seeFollowers: User[];
+}
+
+export interface Comment {
+  id: number;
+  createdAt: Date;
+  comment: string;
+  isMine: boolean;
+  user: User;
 }

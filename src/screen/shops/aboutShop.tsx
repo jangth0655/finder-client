@@ -12,6 +12,7 @@ import Pagination from "../../components/shared/Pagination";
 import UploadPhoto from "../../components/shops/UploadPhoto";
 import useUser from "../../libs/useUser";
 import ShopSubInfo from "../../components/shops/ShopSubInfo";
+import CommentItem from "../../components/comment/CommentItem";
 
 const SEE_SHOP_QUERY = gql`
   ${SHOP_FRAGMENT}
@@ -23,6 +24,20 @@ const SEE_SHOP_QUERY = gql`
       region
       description
       phone
+      isMine
+      user {
+        username
+      }
+      comments(page: $page) {
+        comment
+        id
+        createdAt
+        user {
+          avatar
+          username
+          id
+        }
+      }
       photos(page: $page) {
         url
         id
@@ -50,6 +65,7 @@ const ShopImageBox = styled.div`
   height: 100%;
   border-radius: ${(props) => props.theme.borderRadius.md};
   margin: auto;
+  margin-right: ${(props) => props.theme.mp.sm};
 `;
 const ShopImage = styled.div<{ url?: string }>`
   width: 100%;
@@ -72,7 +88,7 @@ const NoShopImage = styled.div`
 
 const ShopMainInfoBox = styled.div`
   padding: ${(props) => props.theme.mp.md};
-  height: 100%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -85,14 +101,16 @@ const ShopLabel = styled.span`
 const ShopMainInfo = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   font-weight: 600;
   color: ${(props) => props.theme.color.active.base};
   font-size: ${(props) => props.theme.fontSize.sm};
 `;
-const ShopName = styled(ShopMainInfo)`
-  margin-bottom: ${(props) => props.theme.mp.xxl};
+const ShopName = styled(ShopMainInfo)``;
+const ShopSlug = styled(ShopMainInfo)`
+  margin: ${(props) => props.theme.mp.xxl} 0;
 `;
-const ShopSlug = styled(ShopMainInfo)``;
+const ShopUser = styled(ShopMainInfo)``;
 
 const EditShop = styled.div`
   padding: ${(props) => props.theme.mp.sm};
@@ -113,6 +131,8 @@ const ShopNameAndSlugSpan = styled.span`
   color: ${(props) => props.theme.color.active.xl};
   font-size: ${(props) => props.theme.fontSize.xl};
 `;
+
+const ShopUsername = styled(ShopNameAndSlugSpan)``;
 
 const ShopSubInfoTitleSection = styled.section`
   display: flex;
@@ -160,6 +180,7 @@ interface SeeShopResponse {
 const shopInfoTitle = [
   { title: "Info", id: "seeSubInfo" },
   { title: "Photo", id: "seePhoto" },
+  { title: "Comment", id: "comment" },
   { title: "UploadPhoto", id: "upload" },
 ];
 
@@ -191,6 +212,14 @@ const AboutShop: React.FC = () => {
     });
   };
 
+  const rangeTitle = (title: string) => {
+    if (title === "UploadPhoto") {
+      return "";
+    } else {
+      return title;
+    }
+  };
+
   const latestId = data?.seeShop?.photos ? data?.seeShop?.photos.length - 1 : 0;
 
   return (
@@ -213,8 +242,12 @@ const AboutShop: React.FC = () => {
               <ShopLabel>Slug</ShopLabel>
               <ShopNameAndSlugSpan>{data?.seeShop.slug}</ShopNameAndSlugSpan>
             </ShopSlug>
+            <ShopUser>
+              <ShopLabel>Username</ShopLabel>
+              <ShopUsername>{data?.seeShop?.user?.username}</ShopUsername>
+            </ShopUser>
           </div>
-          {user?.isMe && (
+          {data?.seeShop.isMine && (
             <EditShop onClick={() => onEditShop(data?.seeShop.id)}>
               <span>Edit</span>
             </EditShop>
@@ -229,7 +262,7 @@ const AboutShop: React.FC = () => {
             key={title.id}
           >
             <ShopSubInfoTitle>
-              {title.title}
+              {data?.seeShop.isMine ? title.title : rangeTitle(title.title)}
               {title.title === selectTitle && <Mark layoutId="title" />}
             </ShopSubInfoTitle>
           </ShopSubInfoTitleBox>
@@ -241,13 +274,27 @@ const AboutShop: React.FC = () => {
         {selectTitle === "Photo" && (
           <>
             <PhotoItem photos={data?.seeShop?.photos} />
-            <Pagination page={page} setPage={setPage} />
+            <Pagination
+              page={page}
+              setPage={setPage}
+              totalLength={data?.seeShop.photos.length}
+            />
           </>
         )}
         {selectTitle === "Info" && <ShopSubInfo shop={data?.seeShop} />}
-        {selectTitle === "UploadPhoto" && (
+        {selectTitle === "UploadPhoto" && data?.seeShop.isMine && (
           <>
             <UploadPhoto id={id} />
+          </>
+        )}
+        {selectTitle === "Comment" && user?.id && (
+          <>
+            <CommentItem comments={data?.seeShop?.comments} shopId={id} />
+            <Pagination
+              page={page}
+              setPage={setPage}
+              totalLength={data?.seeShop.comments.length}
+            />
           </>
         )}
       </ShopSubInfoSection>
