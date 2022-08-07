@@ -323,9 +323,11 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                 <LinkProfile>Profile</LinkProfile>
               </Link>
               <Link to={"/"}>
-                <LinkLogOut onClick={() => logUserOut(navigate)}>
-                  LogOut
-                </LinkLogOut>
+                {user?.isMe && (
+                  <LinkLogOut onClick={() => logUserOut(navigate)}>
+                    LogOut
+                  </LinkLogOut>
+                )}
               </Link>
             </ActiveLayer>
           </LayerBox>

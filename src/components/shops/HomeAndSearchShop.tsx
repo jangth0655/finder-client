@@ -16,12 +16,12 @@ const FAV_TOGGLE_MUTATION = gql`
 `;
 
 const ShopBox = styled.div`
-  height: 10rem;
+  height: 8rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: ${(props) => props.theme.shadow.md};
-  margin-bottom: 5rem;
+  margin-bottom: 10rem;
   padding: 0 ${(props) => props.theme.mp.sm};
 `;
 
