@@ -88,7 +88,7 @@ const NoShopImage = styled.div`
 
 const ShopMainInfoBox = styled.div`
   padding: ${(props) => props.theme.mp.md};
-  height: 50%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -120,6 +120,7 @@ const EditShop = styled.div`
   text-align: center;
   color: white;
   transition: ${(props) => props.theme.transition};
+  margin-top: ${(props) => props.theme.mp.lg};
   cursor: pointer;
   &:hover {
     background-color: ${(props) => props.theme.color.active.lg};

@@ -19,6 +19,7 @@ const UPLOAD_MUTATION = gql`
     $description: String!
     $name: String!
     $slug: String!
+    $phone: String!
   ) {
     createShops(
       url: $url
@@ -27,6 +28,7 @@ const UPLOAD_MUTATION = gql`
       description: $description
       name: $name
       slug: $slug
+      phone: $phone
     ) {
       ok
       error
@@ -110,6 +112,7 @@ interface IUploadForm {
   description: string;
   name: string;
   slug: string;
+  phone: string;
   error?: string;
 }
 
@@ -128,6 +131,7 @@ const Upload: React.FC = () => {
     watch,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm<IUploadForm>();
   const [preview, setPreview] = useState("");
 
@@ -161,6 +165,7 @@ const Upload: React.FC = () => {
     description,
     name,
     slug,
+    phone,
   }: IUploadForm) => {
     let file;
     if (url && url.length > 0) {
@@ -175,6 +180,7 @@ const Upload: React.FC = () => {
         description,
         name,
         slug,
+        phone,
       },
     });
   };
@@ -219,13 +225,19 @@ const Upload: React.FC = () => {
 
         <UploadInfo>
           <EnterInput
-            register={register("name", { required: true })}
+            register={register("name", {
+              required: true,
+              onChange: () => clearErrors("error"),
+            })}
             id="name"
             labelText="Name"
             placeholder="Name"
           />
           <EnterInput
-            register={register("slug", { required: true })}
+            register={register("slug", {
+              required: true,
+              onChange: () => clearErrors("error"),
+            })}
             id="slug"
             labelText="Slug"
             placeholder="Slug"
@@ -237,6 +249,12 @@ const Upload: React.FC = () => {
             placeholder="Region"
           />
           <EnterInput
+            register={register("phone", { required: true })}
+            id="phone"
+            labelText="Phone"
+            placeholder="Phone"
+          />
+          <EnterInput
             register={register("website")}
             id="website"
             labelText="Website"
@@ -244,7 +262,6 @@ const Upload: React.FC = () => {
           />
           <TextArea
             register={register("description", {
-              required: true,
               minLength: {
                 value: 2,
                 message: "Please, 2 more than",

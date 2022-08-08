@@ -58,6 +58,7 @@ const DELETE_SHOP_MUTATION = gql`
     deleteShop(id: $id) {
       ok
       error
+      id
     }
   }
 `;
@@ -244,7 +245,6 @@ const EditShop: React.FC = () => {
   };
 
   const onDeleteShop = (id: number) => {
-    console.log(id);
     if (deleteShopLoading) return;
     deleteShop({
       variables: {
@@ -301,7 +301,7 @@ const EditShop: React.FC = () => {
               </Remove>
             )}
             <DeleteShop onClick={() => onDeleteShop(shop.id)}>
-              {deletePhotoLoading ? "Loading" : "Delete Shop"}
+              {deleteShopLoading ? "Loading" : "Delete Shop"}
             </DeleteShop>
           </Config>
         </EditShopSection>
@@ -319,7 +319,9 @@ const EditShop: React.FC = () => {
           />
 
           <EnterInput
-            register={register("slug")}
+            register={register("slug", {
+              onChange: () => clearErrors("error"),
+            })}
             id="slug"
             labelText="Slug"
             placeholder="Slug"

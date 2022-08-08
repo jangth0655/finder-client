@@ -11,10 +11,20 @@ import EnterButton from "../../components/enter/EnterButton";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../../components/shared/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import { logUserOut } from "../../apollo";
 
 const REMOVE_AVATAR_MUTATION = gql`
   mutation removeAvatar($avatar: String!) {
     removeAvatar(avatar: $avatar) {
+      ok
+      error
+    }
+  }
+`;
+
+const DELETE_ACCOUNT_MUTATION = gql`
+  mutation deleteAccount($id: Int!) {
+    deleteAccount(id: $id) {
       ok
       error
     }
@@ -80,12 +90,29 @@ const ConfigAvatar = styled.div`
 `;
 
 const Reset = styled.div`
-  margin-bottom: ${(props) => props.theme.mp.lg};
   width: 100%;
+  margin-bottom: ${(props) => props.theme.mp.lg};
 `;
 
 const Remove = styled.div`
   width: 100%;
+  margin-bottom: ${(props) => props.theme.mp.lg};
+`;
+
+const DeleteAccount = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  opacity: 0.5;
+  color: white;
+  border-radius: ${(props) => props.theme.borderRadius.md};
+  padding: ${(props) => props.theme.mp.sm} 0;
+  cursor: pointer;
+  transition: ${(props) => props.theme.transition};
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const UserInfoSection = styled.section`
@@ -93,7 +120,7 @@ const UserInfoSection = styled.section`
   margin: auto;
 `;
 
-interface RemoveAvatarMutation {
+interface EditMutation {
   ok: boolean;
   error?: string;
 }
@@ -123,8 +150,7 @@ const EditProfile: React.FC = () => {
   const SectionRef = useRef<HTMLDivElement>(null);
   const [preview, setPreview] = useState("");
   const { user } = useUser({ isPrivate: true });
-  const [remove, { loading: removeAvatarLoading }] =
-    useMutation<RemoveAvatarMutation>(REMOVE_AVATAR_MUTATION);
+
   const {
     register,
     handleSubmit,
@@ -187,10 +213,42 @@ const EditProfile: React.FC = () => {
     });
   };
 
+  const [remove, { loading: removeAvatarLoading }] = useMutation<EditMutation>(
+    REMOVE_AVATAR_MUTATION
+  );
+
   const onRemoveAvatar = (avatar: string) => {
     remove({
       variables: {
         avatar,
+      },
+    });
+  };
+
+  const onDeleteAccountComplete = (data: any) => {
+    const {
+      deleteAccount: { ok, error },
+    } = data;
+    if (ok) {
+      logUserOut(navigate);
+      navigate("/");
+    }
+    if (error) {
+      return;
+    }
+  };
+  const [deleteAccount, { loading: deleteAccountLoading }] =
+    useMutation<EditMutation>(DELETE_ACCOUNT_MUTATION, {
+      onCompleted: onDeleteAccountComplete,
+    });
+
+  const onDeleteAccount = (id?: number) => {
+    console.log(id);
+    window.confirm("Really???");
+    if (deleteAccountLoading) return;
+    deleteAccount({
+      variables: {
+        id,
       },
     });
   };
@@ -254,6 +312,11 @@ const EditProfile: React.FC = () => {
                 </SmallBurtton>
               </Remove>
             ) : null}
+            {user?.isMe && (
+              <DeleteAccount onClick={() => onDeleteAccount(user?.id)}>
+                Delete Account
+              </DeleteAccount>
+            )}
           </ConfigAvatar>
         </AvatarSection>
 

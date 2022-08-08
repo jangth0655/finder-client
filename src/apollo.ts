@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  makeVar,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, makeVar } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { NavigateFunction } from "react-router-dom";
 import { createUploadLink } from "apollo-upload-client";
@@ -34,10 +29,6 @@ export const logUserOut = (navigate: NavigateFunction) => {
   isLoggedInVar(false);
   navigate("/", { replace: true });
 };
-
-// const httpLink = createHttpLink({
-//   uri: `http://localhost:4000/graphql`,
-// });
 
 const uploadHttpLink = createUploadLink({
   uri: `http://localhost:4000/graphql`,
