@@ -31,7 +31,10 @@ export const logUserOut = (navigate: NavigateFunction) => {
 };
 
 const uploadHttpLink = createUploadLink({
-  uri: `http://localhost:4000/graphql`,
+  uri:
+    process.env.NODE_ENV === "production"
+      ? `https://finder-taehee.herokuapp.com/graphql`
+      : `http://localhost:4000/graphql`,
 });
 
 const authLink = setContext((_, { headers }) => {
