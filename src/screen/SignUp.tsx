@@ -74,6 +74,7 @@ const SignUp: React.FC = () => {
     formState: { errors },
     getValues,
     setError,
+    clearErrors,
   } = useForm<SignUpForm>({
     mode: "onChange",
   });
@@ -149,7 +150,10 @@ const SignUp: React.FC = () => {
           id="username"
           placeholder="username"
           labelText="Username"
-          register={register("username", { required: "Username is required." })}
+          register={register("username", {
+            required: "Username is required.",
+            onChange: () => clearErrors("error"),
+          })}
           hasError={Boolean(errors?.username)}
           required={true}
         />
@@ -169,6 +173,7 @@ const SignUp: React.FC = () => {
           labelText="Email"
           register={register("email", {
             required: "Email is required.",
+            onChange: () => clearErrors("error"),
             validate: {
               emailform: (value) => value.includes("@") || "Please email form.",
             },
