@@ -156,6 +156,7 @@ const Upload: React.FC = () => {
     errors.region?.message ||
     errors.slug?.message ||
     errors.website?.message ||
+    errors.phone?.message ||
     errors.error?.message;
 
   const onValid = ({
@@ -249,7 +250,9 @@ const Upload: React.FC = () => {
             placeholder="Region"
           />
           <EnterInput
-            register={register("phone", { required: true })}
+            register={register("phone", {
+              required: "Phon number is required.",
+            })}
             id="phone"
             labelText="Phone"
             placeholder="Phone"

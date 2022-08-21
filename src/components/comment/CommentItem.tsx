@@ -130,6 +130,9 @@ const Button = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.color.active.base};
   }
+  @media (max-width: ${(props) => props.theme.respnosive.sm}) {
+    font-size: ${(props) => props.theme.fontSize.xs};
+  }
 `;
 
 const DeleteBox = styled.span`
@@ -295,7 +298,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ shopId, comments }) => {
               {...register("comment", { required: true })}
               placeholder="Wirte Comment..."
             />
-            <Button>{createCommentLoading ? "Loading" : "Comment"}</Button>
+            <Button>{createCommentLoading ? "Loading" : "Submit"}</Button>
           </CreateCommentForm>
         </CommentSection>
       </Main>

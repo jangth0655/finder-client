@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const ShopBox = styled.div`
   height: 24rem;
-  border: 2px solid ${(props) => props.theme.color.main.xs};
   border-radius: ${(props) => props.theme.borderRadius.md};
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
   transition: ${(props) => props.theme.transition};
   cursor: pointer;
   &:hover {
@@ -20,8 +17,6 @@ const ShopBox = styled.div`
 const ShopImageBox = styled.div<{ isPhoto?: boolean }>`
   height: 90%;
   border-radius: ${(props) => props.theme.borderRadius.md};
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
   background-color: ${(props) =>
     props.isPhoto ? "" : props.theme.color.active.sm};
   span {
@@ -35,8 +30,6 @@ const ShopImage = styled.div<{ url?: string }>`
   width: 100%;
   height: 100%;
   border-radius: ${(props) => props.theme.borderRadius.md};
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
   background-image: url(${(props) => props.url});
   background-size: cover;
   background-position: center center;

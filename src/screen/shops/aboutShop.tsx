@@ -49,19 +49,13 @@ const SEE_SHOP_QUERY = gql`
 const ShopPhotoSection = styled.section`
   display: flex;
   align-items: center;
-  width: 50%;
+  width: 100%;
   height: 22rem;
   margin: auto;
   margin-bottom: 4rem;
-  @media (max-width: ${(props) => props.theme.respnosive.md}) {
-    width: 70%;
-  }
-  @media (max-width: ${(props) => props.theme.respnosive.sm}) {
-    width: 100%;
-  }
 `;
 const ShopImageBox = styled.div`
-  width: 100%;
+  width: 60%;
   height: 100%;
   border-radius: ${(props) => props.theme.borderRadius.md};
   margin: auto;
@@ -87,6 +81,7 @@ const NoShopImage = styled.div`
 `;
 
 const ShopMainInfoBox = styled.div`
+  width: 30%;
   padding: ${(props) => props.theme.mp.md};
   height: 70%;
   display: flex;
@@ -131,12 +126,18 @@ const ShopNameAndSlugSpan = styled.span`
   font-weight: 700;
   color: ${(props) => props.theme.color.active.xl};
   font-size: ${(props) => props.theme.fontSize.xl};
+  @media (max-width: ${(props) => props.theme.respnosive.sm}) {
+    font-size: ${(props) => props.theme.fontSize.sm};
+  }
 `;
 
 const ShopUsername = styled(ShopNameAndSlugSpan)``;
 
 const ShopSubInfoTitleSection = styled.section`
   display: flex;
+  @media (max-width: ${(props) => props.theme.respnosive.sm}) {
+    font-size: ${(props) => props.theme.fontSize.sm};
+  }
 `;
 
 const ShopSubInfoTitleBox = styled.div`
@@ -150,6 +151,10 @@ const ShopSubInfoTitleBox = styled.div`
   margin-right: ${(props) => props.theme.mp.xxxxl};
   &:hover {
     color: ${(props) => props.theme.color.active.base};
+  }
+  @media (max-width: ${(props) => props.theme.respnosive.sm}) {
+    font-size: ${(props) => props.theme.fontSize.lg};
+    margin-right: ${(props) => props.theme.mp.lg};
   }
 `;
 const ShopSubInfoTitle = styled.span``;

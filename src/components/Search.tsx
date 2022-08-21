@@ -73,7 +73,7 @@ const Search: React.FC = () => {
   const { register, handleSubmit } = useForm<ISearchForm>();
   const onCompleted = (data: any) => {
     if (data && data.name !== "") {
-      navigate("/shops/searchItems");
+      navigate("/shops/searchItems", { state: data.searchShop });
     }
   };
 
