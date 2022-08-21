@@ -9,7 +9,7 @@ const SearchItems = () => {
   const searchItems = useLocation().state as LocationState;
 
   return (
-    <Layout>
+    <Layout title="Search">
       <ShopItems shops={searchItems} />
     </Layout>
   );
