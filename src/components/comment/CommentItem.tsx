@@ -211,28 +211,28 @@ const CommentItem: React.FC<CommentItemProps> = ({ shopId, comments }) => {
       },
     } = result;
 
-    if (ok) {
+    if (ok && id) {
       cache.modify({
         id: `Shop:${shopId}`,
         fields: {
-          comments: (prev) => {
-            const existComments = [...prev];
-            const newComments = existComments.filter(
-              (comment) => comment.__ref !== `Comment:${id}`
-            );
+          comments: (prev, { readField }) => {
+            const newComments = prev.filter((comment: any) => {
+              return id !== readField("id", comment);
+            });
             return newComments;
           },
         },
       });
     }
   };
+
   const [deleteComment, { loading: deleteCommentLoading }] =
     useMutation<CommentMutation>(DELETE_COMMENT_MUTATION, {
       update: deleteCommentUpdate,
     });
 
   const onDelete = (id: number) => {
-    if (deleteCommentLoading) return;
+    if (deleteCommentLoading || id === undefined) return;
     deleteComment({
       variables: {
         id,
