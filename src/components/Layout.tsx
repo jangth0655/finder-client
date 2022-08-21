@@ -317,7 +317,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                 <LinkUpload>Upload</LinkUpload>
               </Link>
               <Link
-                to={"/users/profile"}
+                to={`/users/profile/${user?.id}`}
                 state={{ username: user?.username, id: user?.id }}
               >
                 <LinkProfile>Profile</LinkProfile>

@@ -26,6 +26,7 @@ const SEE_SHOP_QUERY = gql`
       phone
       isMine
       user {
+        id
         username
       }
       comments(page: $page) {
@@ -131,7 +132,15 @@ const ShopNameAndSlugSpan = styled.span`
   }
 `;
 
-const ShopUsername = styled(ShopNameAndSlugSpan)``;
+const ShopUsername = styled(ShopNameAndSlugSpan)`
+  width: 40%;
+  cursor: pointer;
+  color: ${(props) => props.theme.color.active.sm};
+  transition: ${(props) => props.theme.transition};
+  &:hover {
+    color: ${(props) => props.theme.color.active.xl};
+  }
+`;
 
 const ShopSubInfoTitleSection = styled.section`
   display: flex;
@@ -218,6 +227,15 @@ const AboutShop: React.FC = () => {
     });
   };
 
+  const onProfile = (id?: number, username?: string) => {
+    navigate(`/users/profile/${id}`, {
+      state: {
+        username,
+        id,
+      },
+    });
+  };
+
   const rangeTitle = (title: string) => {
     if (title === "UploadPhoto") {
       return "";
@@ -242,7 +260,9 @@ const AboutShop: React.FC = () => {
           <div>
             <ShopName>
               <ShopLabel>Name</ShopLabel>
-              <ShopNameAndSlugSpan>{data?.seeShop.name}</ShopNameAndSlugSpan>
+              <ShopNameAndSlugSpan>
+                <span>{data?.seeShop.name}</span>
+              </ShopNameAndSlugSpan>
             </ShopName>
             <ShopSlug>
               <ShopLabel>Slug</ShopLabel>
@@ -250,7 +270,13 @@ const AboutShop: React.FC = () => {
             </ShopSlug>
             <ShopUser>
               <ShopLabel>Username</ShopLabel>
-              <ShopUsername>{data?.seeShop?.user?.username}</ShopUsername>
+              <ShopUsername
+                onClick={() =>
+                  onProfile(data?.seeShop.user.id, data?.seeShop.user.username)
+                }
+              >
+                {data?.seeShop?.user?.username}
+              </ShopUsername>
             </ShopUser>
           </div>
           {data?.seeShop.isMine && (

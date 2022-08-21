@@ -224,6 +224,7 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   const [selectTitle, setSelectTitle] = useState("Shops");
   const { username, id } = location.state as LocationState;
+
   const { data: profileData, loading } = useQuery<SeeProfile>(SEE_PROFILE, {
     variables: {
       username: username && username,
