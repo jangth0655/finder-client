@@ -127,6 +127,7 @@ const DeleteShop = styled.div`
   margin: auto;
   cursor: pointer;
   font-weight: 600;
+  border: 1px solid black;
   &:hover {
     opacity: 1;
   }
@@ -339,7 +340,7 @@ const EditShop: React.FC = () => {
             labelText="Phone"
             placeholder="Phone"
           />
-          <TextArea register={register("description")} label="Bio" />
+          <TextArea register={register("description")} label="Description" />
           <EnterButton text="Edit" loading={editLoading} />
         </InfoSection>
       </UploadForm>

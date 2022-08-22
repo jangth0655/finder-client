@@ -1,7 +1,7 @@
 ![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=100&section=header&text=Finder&fontSize=50)
 
 <div align="center">
-  <a href="https://netflix-gw.netlify.app">
+  <a href="https://finder-web.netlify.app/>
     <img  height="70" src="./src/assets/images/logo.jpeg" />
     <br /><br />
     <a display="block" href="https://finder-web.netlify.app/">https://finder-web.netlify.app/</a>
@@ -44,6 +44,12 @@
 ## Project
 
 ✓ 모든 `이미지는 AWS S3`의 버킷에 저장됩니다.
+
+> 네비게이션
+
+- 로그아웃 또는 로그인(로그인 여부), 아바타가 있습니다.
+- 아바타를 통해 유저 프로필을 확인할 수 있습니다.
+- 업로드와 프로필을 확인할 수 있습니다.
 
 > 1. 회원가입, 로그인
 
