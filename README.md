@@ -1,46 +1,151 @@
-# Getting Started with Create React App
+![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=100&section=header&text=Finder&fontSize=50)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <a href="https://netflix-gw.netlify.app">
+    <img  height="70" src="./src/assets/images/logo.jpeg" />
+    <br /><br />
+    <a display="block" href="https://finder-web.netlify.app/">https://finder-web.netlify.app/</a>
+    <br /><br />
+    <img height="700" src="./previews/1.gif" />
+  </a>
+</div>
 
-## Available Scripts
+## Content
 
-In the project directory, you can run:
+- 🛠 [Built with](#built-with)
+- 🚀 [Project](#project)
+- 📖 [Pages](#pages)
+- ✓ [Features](#features)
+- 🔥 [Code](#code)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Built with
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Front-end
 
-### `npm test`
+- `React`
+- `Typescript`
+- `Styled-components`
+- `Framer-motion`
+- `Apollo-client`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Back-end
 
-### `npm run build`
+- `Apollo-server`
+- `Graphql`
+- `Postgres`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Deploy
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Client : `Netlify`
+- Server : `Heroku`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project
 
-### `npm run eject`
+✓ 모든 `이미지는 AWS S3`의 버킷에 저장됩니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+> 1. 회원가입, 로그인
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 유저네임, 이름, 이메일, 지역, 커리어, 비밀번호를 입력하여 로그인 할 수 있습니다.
+- 비밀번호는 `bcrypt`를 사용하여 해시화 되고 DB에 저장됩니다.
+- `jwt`를 통해 유저를 인증하여 로그인됩니다.
+  <br></br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+> 2. Shops
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- shop이름과 슬러그, 업로드일을 확인 할 수있습니다.
+- shop 디테일페이지와 "좋아요"를 클릭 할 수 있습니다.
+  <br /><br />
 
-## Learn More
+> 3. 검색
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- shop이름(제목)으로 검색을 할 수 있습니다.
+- 관련된 shop들을 확인 할 수 있습니다.
+  <br /><br />
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> 4. 업로드
+
+- 샵 정보  
+  → 포토, 이름(제목), 슬러그, 지역, 전화번호 등을 입력하여 업로드 할 수 있습니다.
+- 포토는 미리보기를 통해 업로드할 수 있습니다.
+  <br /><br />
+
+> 5. About Shop (상세정보)
+
+- 샵 상세페이지에서 샵의 지역, 사이트, 전화번호 등 확인 할 수 있습니다.
+- 업로드 한 유저네임을 클릭하여 유저의 프로필로 이동할 수 있습니다.
+- 샵에서 게시한 포토를 확인할 수 있습니다.
+- 샵에 대하여 유저들은 댓글을 게시 및 삭제를 할 수 있습니다.
+- 해당 `샵 유저`라면 사진을 업로드 할 수 있습니다.
+- 해당 `샵 유저`라면 샵 수정페이지로 이동할 수 있습니다.
+  <br /><br />
+
+> 6. Edit Shop (샵 수정)
+
+- 샵 정보  
+  → 이름(제목), 슬러그, 지역, 전화번호 등을 수정할 수 있습니다.
+- 샵의 이름(제목), 슬러그는 유니크하게 설정됩니다.
+- 미리보기를 통해 샵의 포토를 확인 할 수 있습니다.
+- 변경한 포토가 메인 포토로 설정됩니다.
+- 샵의 포토를 변경할 수 있고 삭제 할 수 있습니다.  
+  → 삭제할 경우 기본 배경으로 설정됩니다.
+- 샵을 삭제할 수 있습니다.
+  <br /><br />
+
+> 7. 프로필
+
+- 유저는 유저가 게시한 샵과 "좋아요"한 샵을 확인할 수 있습니다.
+- 자신을 "팔로워"한 유저를 확인할 수 있습니다.
+- 해당 유저(로그인한 자기자신)만 프로필 수정페이지로 이동할 수 있습니다.
+- 다른 유저들이 "팔로워"할 수 있습니다.
+
+> 8. 프로필 수정
+
+- 유저의 아바타와 유저의 정보를 수정할 수 있습니다.
+- 미리보기를 통해 아바타를 변경할 수 있습니다.
+
+## Pages
+
+- 회원가입
+- 로그인
+
+> 홈
+
+- 업로드된 샵
+- 업로드 샵
+- 검색
+
+> shop
+
+- 상세페이지
+- 샵 수정
+- 업로드 포토
+- 댓글 생성 및 삭제
+
+> User
+
+- 프로필
+- 프로필 수정
+  <br><br/>
+
+## Feature
+
+### 🌈 Shop
+
+- Info
+- 게시한 포토
+- 댓글 게시 및 삭제
+- 업로드 포토
+- 샵 수정 (포토 미리보기, 삭제)
+
+### 🙋‍♂️ User
+
+- 회원가입 / 로그인
+- 아바타 업로드 (포토 미리보기)
+- 프로필 수정 (포토 미리보기, 삭제)
+- 회원정보 변경
+
+## Code
+
+<a href="https://github.com/jangth0655/finder-client">🔥 GitHub</a>
