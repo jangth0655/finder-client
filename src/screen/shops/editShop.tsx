@@ -127,9 +127,12 @@ const DeleteShop = styled.div`
   margin: auto;
   cursor: pointer;
   font-weight: 600;
-  border: 1px solid black;
+  text-align: center;
   &:hover {
     opacity: 1;
+  }
+  @media (max-width: ${(props) => props.theme.respnosive.sm}) {
+    font-size: ${(props) => props.theme.fontSize.sm};
   }
 `;
 
