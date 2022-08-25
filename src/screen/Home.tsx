@@ -35,9 +35,11 @@ const Home: React.FC = () => {
 
   return (
     <Layout title="Main">
-      {data?.seeShops.map((shop) => (
-        <HomeAndSearchShop key={shop.id} id={shop.id} shop={shop} />
-      ))}
+      {data?.seeShops
+        ? data?.seeShops.map((shop) => (
+            <HomeAndSearchShop key={shop.id} id={shop.id} shop={shop} />
+          ))
+        : "Loading..."}
       <Pagination
         page={page}
         setPage={setPage}

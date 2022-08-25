@@ -107,7 +107,7 @@ const DeleteAccount = styled.div`
   opacity: 0.5;
   color: white;
   border-radius: ${(props) => props.theme.borderRadius.md};
-  padding: ${(props) => props.theme.mp.sm} 0;
+  padding: ${(props) => props.theme.mp.sm};
   cursor: pointer;
   transition: ${(props) => props.theme.transition};
   &:hover {
