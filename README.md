@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=100&section=header&text=Finder&fontSize=50)
+![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=120&section=header&text=Finder&fontSize=70)
 
 <div align="center">
   <a href="https://finder-web.netlify.app/>
@@ -135,7 +135,7 @@
 - 프로필 수정
   <br><br/>
 
-## Feature
+## Features
 
 ### 🌈 Shop
 
