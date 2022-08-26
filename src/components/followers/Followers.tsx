@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { User } from "../../interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "../shared/Pagination";
 import { useNavigate } from "react-router-dom";
 
@@ -58,6 +58,7 @@ const Username = styled.span`
 
 interface SeeProfileProps {
   username?: string;
+  followRefetch: boolean;
 }
 
 interface SeeFollowerResponse {
@@ -68,10 +69,10 @@ interface SeeFollowerResponse {
   };
 }
 
-const Followers: React.FC<SeeProfileProps> = ({ username }) => {
+const Followers: React.FC<SeeProfileProps> = ({ username, followRefetch }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const { data } = useQuery<SeeFollowerResponse>(SEE_FOLLOWERS, {
+  const { data, refetch } = useQuery<SeeFollowerResponse>(SEE_FOLLOWERS, {
     variables: {
       username,
       page,
@@ -86,6 +87,10 @@ const Followers: React.FC<SeeProfileProps> = ({ username }) => {
       },
     });
   };
+
+  useEffect(() => {
+    refetch({});
+  }, [followRefetch, refetch]);
 
   return (
     <>

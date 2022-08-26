@@ -219,6 +219,7 @@ const shopSectionTitle = [
 ];
 
 const Profile: React.FC = () => {
+  const [followRefetch, setFollowRefetch] = useState(false);
   const [page, setPage] = useState(1);
   const location = useLocation();
   const navigate = useNavigate();
@@ -264,9 +265,11 @@ const Profile: React.FC = () => {
             isFollowing: !isFollowing,
           },
         });
+        setFollowRefetch(isFollowing);
       }
     }
   };
+
   const [following] = useMutation<FollowerUserMutation>(FOLLOWER_USER, {
     update: updateToggleFollower,
   });
@@ -277,6 +280,7 @@ const Profile: React.FC = () => {
         username,
       },
     });
+    setFollowRefetch((prev) => !prev);
   };
 
   const onEditProfile = () => {
@@ -349,7 +353,9 @@ const Profile: React.FC = () => {
                   />
                 </>
               )}
-              {selectTitle === "Followers" && <Followers username={username} />}
+              {selectTitle === "Followers" && (
+                <Followers followRefetch={followRefetch} username={username} />
+              )}
             </Shops>
           </ShopSection>
         </MainSection>

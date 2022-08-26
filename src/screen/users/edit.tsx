@@ -231,7 +231,7 @@ const EditProfile: React.FC = () => {
     } = data;
     if (ok) {
       logUserOut(navigate);
-      navigate("/");
+      navigate("/", { state: { ok } });
     }
     if (error) {
       return;

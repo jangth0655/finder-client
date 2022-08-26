@@ -140,7 +140,7 @@ const Upload: React.FC = () => {
       createShops: { ok, error },
     } = data;
     if (ok) {
-      navigate("/");
+      navigate("/", { state: { ok } });
     }
     if (error) {
       setError("error", { message: error });
