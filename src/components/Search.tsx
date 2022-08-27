@@ -96,7 +96,7 @@ const Search: React.FC = () => {
       <SearchInput
         {...register("name", { required: "name is required." })}
         type="text"
-        placeholder="Search"
+        placeholder="Shop Name"
       />
 
       <SearchButton>
