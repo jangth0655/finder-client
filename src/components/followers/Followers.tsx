@@ -95,28 +95,28 @@ const Followers: React.FC<SeeProfileProps> = ({ username, followRefetch }) => {
   return (
     <>
       <Main>
-        {data?.seeFollowers.users.map((user) => (
+        {data?.seeFollowers?.users?.map((user) => (
           <ItemBox
             onClick={() => onProfile(user?.id, user?.username)}
             key={user.id}
           >
             <AvatarBox>
               {user.avatar ? (
-                <Avatar src={user.avatar} alt="" />
+                <Avatar src={user?.avatar} alt="" />
               ) : (
                 <NoAvatar>
                   <FontAwesomeIcon icon={faUser} />
                 </NoAvatar>
               )}
             </AvatarBox>
-            <Username>{user.username}</Username>
+            <Username>{user?.username}</Username>
           </ItemBox>
         ))}
       </Main>
       <Pagination
         page={page}
         setPage={setPage}
-        totalLength={data?.seeFollowers.users.length}
+        totalLength={data?.seeFollowers?.users?.length}
       />
     </>
   );

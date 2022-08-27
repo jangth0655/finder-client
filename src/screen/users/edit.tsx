@@ -129,6 +129,7 @@ interface EditProfileMutation {
   editProfile: {
     ok: boolean;
     error?: string;
+    username: string;
   };
 }
 
@@ -165,10 +166,13 @@ const EditProfile: React.FC = () => {
 
   const onCompleted = (data: any) => {
     const {
-      editProfile: { ok, error },
+      editProfile: { ok, error, username },
     } = data;
-    if (ok) {
-      navigate("/");
+    if (ok && user?.id) {
+      console.log("editpage", username);
+      navigate(`/users/profile/${user?.id}`, {
+        state: { ok, username, id: user.id },
+      });
     }
     if (error) {
       setError("error", { message: error });
@@ -231,7 +235,7 @@ const EditProfile: React.FC = () => {
     } = data;
     if (ok) {
       logUserOut(navigate);
-      navigate("/", { state: { ok } });
+      navigate(`/`, { state: { ok } });
     }
     if (error) {
       return;

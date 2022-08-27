@@ -1,6 +1,6 @@
 import { ApolloCache, gql, useMutation, useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../components/Layout";
@@ -18,8 +18,8 @@ import Pagination from "../../components/shared/Pagination";
 const SEE_PROFILE = gql`
   ${USER_FRAGMENT}
   ${SHOP_FRAGMENT}
-  query seeProfile($username: String!, $page: Int) {
-    seeProfile(username: $username) {
+  query seeProfile($id: Int!, $page: Int) {
+    seeProfile(id: $id) {
       ok
       error
       user {
@@ -203,6 +203,7 @@ interface FavShops {
 interface LocationState {
   username: string;
   id: number;
+  ok?: boolean;
 }
 
 interface FollowerUserMutation {
@@ -224,11 +225,15 @@ const Profile: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [selectTitle, setSelectTitle] = useState("Shops");
-  const { username, id } = location.state as LocationState;
+  const { id, ok } = location.state as LocationState;
 
-  const { data: profileData, loading } = useQuery<SeeProfile>(SEE_PROFILE, {
+  const {
+    data: profileData,
+    loading,
+    refetch,
+  } = useQuery<SeeProfile>(SEE_PROFILE, {
     variables: {
-      username: username && username,
+      id: id && Number(id),
       page,
     },
   });
@@ -274,7 +279,7 @@ const Profile: React.FC = () => {
     update: updateToggleFollower,
   });
 
-  const onFollowing = (username: string) => {
+  const onFollowing = (username?: string) => {
     following({
       variables: {
         username,
@@ -291,6 +296,12 @@ const Profile: React.FC = () => {
     setSelectTitle(title);
   };
 
+  useEffect(() => {
+    if (ok && id) {
+      refetch({ id });
+    }
+  }, [ok, refetch, id]);
+
   return (
     <Layout title="Profile">
       {loading ? (
@@ -298,25 +309,27 @@ const Profile: React.FC = () => {
       ) : (
         <MainSection>
           <UserSection>
-            <IsAvatar avatar={profileData?.seeProfile.user.avatar} />
+            <IsAvatar avatar={profileData?.seeProfile.user?.avatar} />
             <InfoBox>
               <UsernameBox>
-                <Username>{username}</Username>
+                <Username>{profileData?.seeProfile?.user?.username}</Username>
                 <FollowerBox>
                   <Follower>Follower</Follower>
                   <FollowerIcon
-                    onClick={() => onFollowing(username)}
-                    isFollowing={profileData?.seeProfile.user.isFollowing}
+                    onClick={() =>
+                      onFollowing(profileData?.seeProfile?.user?.username)
+                    }
+                    isFollowing={profileData?.seeProfile.user?.isFollowing}
                   >
                     <FontAwesomeIcon icon={faCheck} />
                   </FollowerIcon>
                 </FollowerBox>
               </UsernameBox>
-              <Name>{profileData?.seeProfile.user.name}</Name>
+              <Name>{profileData?.seeProfile.user?.name}</Name>
               <CreatedAt>
-                {dateFormate(profileData?.seeProfile?.user.createdAt)}
+                {dateFormate(profileData?.seeProfile?.user?.createdAt)}
               </CreatedAt>
-              {profileData?.seeProfile.user.isMe && (
+              {profileData?.seeProfile.user?.isMe && (
                 <EditBox onClick={onEditProfile}>Edit</EditBox>
               )}
             </InfoBox>
@@ -335,26 +348,29 @@ const Profile: React.FC = () => {
             <Shops>
               {selectTitle === "Shops" && (
                 <>
-                  <ShopItems shops={profileData?.seeProfile.user.shops} />
+                  <ShopItems shops={profileData?.seeProfile.user?.shops} />
                   <Pagination
                     page={page}
                     setPage={setPage}
-                    totalLength={profileData?.seeProfile.user.shops.length}
+                    totalLength={profileData?.seeProfile.user?.shops.length}
                   />
                 </>
               )}
               {selectTitle === "Favorite" && (
                 <>
-                  <ShopItems favShops={favShopsData?.favShops.shops} />
+                  <ShopItems favShops={favShopsData?.favShops?.shops} />
                   <Pagination
                     page={page}
                     setPage={setPage}
-                    totalLength={favShopsData?.favShops.shops.length}
+                    totalLength={favShopsData?.favShops.shops?.length}
                   />
                 </>
               )}
               {selectTitle === "Followers" && (
-                <Followers followRefetch={followRefetch} username={username} />
+                <Followers
+                  followRefetch={followRefetch}
+                  username={profileData?.seeProfile?.user?.username}
+                />
               )}
             </Shops>
           </ShopSection>
