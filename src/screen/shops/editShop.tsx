@@ -186,7 +186,7 @@ const EditShop: React.FC = () => {
       editShop: { ok, error },
     } = data;
     if (ok) {
-      navigate("/");
+      navigate("/", { state: { ok } });
     }
     if (error) {
       setError("error", { message: error });

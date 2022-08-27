@@ -5,7 +5,7 @@ import { Shop } from "../../interface";
 import { SHOP_FRAGMENT } from "../../libs/fragment";
 import styled from "styled-components";
 import { Border } from "../../components/shared/Shared";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import PhotoItem from "../../components/shops/PhotoItem";
 import Pagination from "../../components/shared/Pagination";
@@ -186,6 +186,7 @@ const ShopSubInfoSection = styled.section`
 interface LocationSate {
   id: number;
   name?: string;
+  ok?: boolean;
 }
 
 interface SeeShopResponse {
@@ -205,9 +206,9 @@ const AboutShop: React.FC = () => {
   const [selectTitle, setSelectTitle] = useState("Info");
   const [page, setPage] = useState(1);
   const location = useLocation();
-  const { id, name } = location.state as LocationSate;
+  const { id, name, ok } = location.state as LocationSate;
 
-  const { data } = useQuery<SeeShopResponse>(SEE_SHOP_QUERY, {
+  const { data, refetch } = useQuery<SeeShopResponse>(SEE_SHOP_QUERY, {
     variables: {
       id,
       page,
@@ -243,6 +244,12 @@ const AboutShop: React.FC = () => {
       return title;
     }
   };
+
+  useEffect(() => {
+    if (ok && id) {
+      refetch({ id });
+    }
+  }, [id, ok, refetch]);
 
   const latestId = data?.seeShop?.photos ? data?.seeShop?.photos.length - 1 : 0;
 

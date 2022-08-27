@@ -32,7 +32,6 @@ const ImageBox = styled.label`
   transition: ${(props) => props.theme.transition};
   cursor: pointer;
   border-radius: ${(props) => props.theme.borderRadius.md};
-
   &:hover {
     border-color: ${(props) => props.theme.color.active.lg};
   }
@@ -41,6 +40,7 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   border-radius: ${(props) => props.theme.borderRadius.md};
+  object-fit: cover;
 `;
 
 const UploadIcon = styled.div`
@@ -92,13 +92,14 @@ const UploadPhoto: React.FC<UploadPhotoProps> = ({ id }) => {
     setError,
     formState: { errors },
   } = useForm<UploadForm>();
+
   const [preview, setPreview] = useState("");
   const onCompleted = (data: any) => {
     const {
       uploadPhoto: { ok, error },
     } = data;
     if (ok) {
-      navigate("/");
+      navigate(`/shops/about/${id}`, { state: { id, ok } });
     }
     if (error) {
       setError("error", { message: error });
