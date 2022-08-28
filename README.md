@@ -70,6 +70,7 @@
 - 비밀번호는 `bcrypt`를 사용하여 해시화 되고 DB에 저장됩니다.
 - `jwt`를 통해 유저를 인증하여 로그인됩니다.
   <br></br>
+  <img height="400" src="./preview/login-preview.gif" />
 
 > 2. Shops
 
@@ -106,6 +107,7 @@ const favToggleUpdate = (cache: ApolloCache<any>, result: any) => {
 - shop이름(제목)으로 검색을 할 수 있습니다.
 - 관련된 shop들을 확인 할 수 있습니다.
   <br /><br />
+  <img height="400" src="./preview/search-preview.gif" />
 
 > 4. 업로드
 
@@ -127,6 +129,7 @@ useEffect(() => {
 ```
 
 <br /><br />
+<img height="400" src="./preview/upload-preveiw.gif" />
 
 > 5. About Shop (상세정보)
 
@@ -137,6 +140,7 @@ useEffect(() => {
 - 해당 `샵 유저`라면 사진을 업로드 할 수 있습니다.
 - 해당 `샵 유저`라면 샵 수정페이지로 이동할 수 있습니다.
   <br /><br />
+  <img height="400" src="./preview/shopComment-preveiw.gif" />
 
 > 6. Edit Shop (샵 수정)
 
@@ -149,6 +153,7 @@ useEffect(() => {
   → 삭제할 경우 기본 배경으로 설정됩니다.
 - 샵을 삭제할 수 있습니다.
   <br /><br />
+  <img height="400" src="./preview/editShop-preview.gif" />
 
 > 7. 프로필
 
@@ -163,6 +168,7 @@ useEffect(() => {
 - 유저의 아바타와 유저의 정보를 수정할 수 있습니다.
 - 미리보기를 통해 아바타를 변경할 수 있습니다.
   <br /><br />
+  <img height="400" src="./preview/profile-preview.gif" />
 
 > 9. 기타 훅 (share)
 
@@ -186,7 +192,7 @@ const useUser = ({ isPrivate }: UseUserProps) => {
 
 <br />
 
-- pagination : 페이지 구분 훅 구현
+- pagination : 페이지 구분 구현
 
 ```typescript
 const Pagination: React.FC<PaginationProps> = ({
@@ -286,4 +292,11 @@ const WindowSize = () => {
 
 ## 느낀점
 
--
+```
+클라이언트 부분에서 느낀점..
+익숙한 REST와 달리  apollo client를 활용하고 graphql을 통해 데이터를 받아오는 점에서 흥미로웠고 재밌었습니다. 하지만 앱을 구현에 있어서 익숙치 않아서 어려움점이 있었습니다.
+특히 아폴로 캐쉬를 조작하는 과정에서 fragment와 modify를 활용하는 어려움이 있었습니다.
+그래서 공식문서를 자세히 읽어보며(예제와 설명) 적용해나갔고, 부족한 부분은 구글링을 통해서 해결해 나갔습니다.
+이번 finder(앱이름)를 통해 graphql를 활용하여 서버와 데이터를 주고받는 것에 조금 익숙해지고,
+알게 되었으며 캐쉬를 조작하여 좀 더 빠른 앱을 만들 수 있다는 것을 배웠습니다.
+```
