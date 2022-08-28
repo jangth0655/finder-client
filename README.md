@@ -69,7 +69,7 @@
 - 비밀번호는 `bcrypt`를 사용하여 해시화 되고 DB에 저장됩니다.
 - `jwt`를 통해 유저를 인증하여 로그인됩니다.
   <br></br>
-  <img height="600" src="./preview/login-preview.gif" />
+  <img height="500" src="./preview/login-preview.gif" />
 
 > 2. Shops
 
@@ -106,7 +106,7 @@ const favToggleUpdate = (cache: ApolloCache<any>, result: any) => {
 - shop이름(제목)으로 검색을 할 수 있습니다.
 - 관련된 shop들을 확인 할 수 있습니다.
   <br /><br />
-  <img height="600" src="./preview/search-preview.gif" />
+  <img height="500" src="./preview/search-preview.gif" />
 
 > 4. 업로드
 
@@ -128,7 +128,7 @@ useEffect(() => {
 ```
 
 <br /><br />
-<img height="600" src="./preview/upload-preveiw.gif" />
+<img height="500" src="./preview/upload-preveiw.gif" />
 
 > 5. About Shop (상세정보)
 
@@ -139,7 +139,7 @@ useEffect(() => {
 - 해당 `샵 유저`라면 사진을 업로드 할 수 있습니다.
 - 해당 `샵 유저`라면 샵 수정페이지로 이동할 수 있습니다.
   <br /><br />
-  <img height="600" src="./preview/shopComment-preveiw.gif" />
+  <img height="500" src="./preview/shopComment-preveiw.gif" />
 
 > 6. Edit Shop (샵 수정)
 
@@ -152,7 +152,7 @@ useEffect(() => {
   → 삭제할 경우 기본 배경으로 설정됩니다.
 - 샵을 삭제할 수 있습니다.
   <br /><br />
-  <img height="600" src="./preview/editShop-preview.gif" />
+  <img height="500" src="./preview/editShop-preview.gif" />
 
 > 7. 프로필
 
@@ -167,7 +167,7 @@ useEffect(() => {
 - 유저의 아바타와 유저의 정보를 수정할 수 있습니다.
 - 미리보기를 통해 아바타를 변경할 수 있습니다.
   <br /><br />
-  <img height="600" src="./preview/profile-preview.gif" />
+  <img height="500" src="./preview/profile-preview.gif" />
 
 > 9. 기타 훅 (share)
 
