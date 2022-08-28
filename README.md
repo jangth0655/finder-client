@@ -1,12 +1,17 @@
 ![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=120&section=header&text=Finder&fontSize=70)
 
 <div align="center">
-  <a href="https://finder-web.netlify.app/>
-    <img  height="70" src="./src/assets/images/logo.jpeg" />
+    <br />
+    <div>
+      <img height="70" src="./src/assets/images/logo.jpeg" /> 
+    </div>
     <br /><br />
-    <a display="block" href="https://finder-web.netlify.app/">https://finder-web.netlify.app/</a>
-    <br /><br />
-    <img height="700" src="./previews/1.gif" />
+    <a display="block" href="https://finder-web.netlify.app/" >
+      https://finder-web.netlify.app/
+    </a>
+    <br />
+</div>
+
   </a>
 </div>
 
@@ -17,6 +22,7 @@
 - 📖 [Pages](#pages)
 - ✓ [Features](#features)
 - 🔥 [Code](#code)
+- 👍 [느낀점](#느낀점)
 
 ---
 
@@ -28,6 +34,7 @@
 - `Typescript`
 - `Styled-components`
 - `Framer-motion`
+- `React-hook-form`
 - `Apollo-client`
 
 ### Back-end
@@ -40,8 +47,12 @@
 
 - Client : `Netlify`
 - Server : `Heroku`
+- code : <a></a>
 
 ## Project
+
+→ 샵을 업로드하여 홍보하거나 업로드된 샵을 탐색할 수 있습니다.  
+ 코멘트를 남기거나 팔로워를 하여
 
 ✓ 모든 `이미지는 AWS S3`의 버킷에 저장됩니다.
 
@@ -50,10 +61,12 @@
 - 로그아웃 또는 로그인(로그인 여부), 아바타가 있습니다.
 - 아바타를 통해 유저 프로필을 확인할 수 있습니다.
 - 업로드와 프로필을 확인할 수 있습니다.
+  <br /><br />
 
 > 1. 회원가입, 로그인
 
 - 유저네임, 이름, 이메일, 지역, 커리어, 비밀번호를 입력하여 로그인 할 수 있습니다.
+- 유저네임과 이메일은 필수조건이며, 중복이 불가하도록 하였습니다.(유니크)
 - 비밀번호는 `bcrypt`를 사용하여 해시화 되고 DB에 저장됩니다.
 - `jwt`를 통해 유저를 인증하여 로그인됩니다.
   <br></br>
@@ -61,8 +74,32 @@
 > 2. Shops
 
 - shop이름과 슬러그, 업로드일을 확인 할 수있습니다.
-- shop 디테일페이지와 "좋아요"를 클릭 할 수 있습니다.
-  <br /><br />
+- shop 디테일페이지와 "좋아요"를 클릭 할 수 있습니다. (코드 ↓)
+
+```typescript
+// 해당 샵의 아이디를 fav로 뮤테이션합니다. (서버)
+// 즉각적인 반응을 얻기 위해 아폴로 캐쉬를 변형하였습니다. (cache.modify)
+const [fav, { loading }] = useMutation<FavToggleMutation>(FAV_TOGGLE_MUTATION, {
+  update: favToggleUpdate,
+});
+const favToggleUpdate = (cache: ApolloCache<any>, result: any) => {
+  const {
+    data: {
+      favsToggle: { ok },
+    },
+  } = result;
+  if (ok) {
+    cache.modify({
+      id: `Shop:${id}`,
+      fields: {
+        isLike: (prev: any) => !prev,
+      },
+    });
+  }
+};
+```
+
+<br /><br />
 
 > 3. 검색
 
@@ -74,8 +111,22 @@
 
 - 샵 정보  
   → 포토, 이름(제목), 슬러그, 지역, 전화번호 등을 입력하여 업로드 할 수 있습니다.
-- 포토는 미리보기를 통해 업로드할 수 있습니다.
-  <br /><br />
+- `react-hook-form`을 활용하여 포토는 미리보기를 통해 업로드할 수 있습니다. (코드 ↓)
+
+```typescript
+const [preview, setPreview] = useState("");
+const { watch } = useForm<IUploadForm>();
+const image = watch("url");
+useEffect(() => {
+  if (image && image.length > 0) {
+    const file = image[0];
+    const imageFile = URL.createObjectURL(file);
+    setPreview(imageFile);
+  }
+}, [image]);
+```
+
+<br /><br />
 
 > 5. About Shop (상세정보)
 
@@ -105,11 +156,84 @@
 - 자신을 "팔로워"한 유저를 확인할 수 있습니다.
 - 해당 유저(로그인한 자기자신)만 프로필 수정페이지로 이동할 수 있습니다.
 - 다른 유저들이 "팔로워"할 수 있습니다.
+  <br /><br />
 
 > 8. 프로필 수정
 
 - 유저의 아바타와 유저의 정보를 수정할 수 있습니다.
 - 미리보기를 통해 아바타를 변경할 수 있습니다.
+  <br /><br />
+
+> 9. 기타 훅 (share)
+
+- useUser hook : 로그인된 사용자를 확인하는 훅
+
+```typescript
+const useUser = ({ isPrivate }: UseUserProps) => {
+  const navigate = useNavigate();
+  const { loading, error, data } = useQuery<Me>(ME_QUERY);
+
+  useEffect(() => {
+    if (isPrivate && !data?.me) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }, [data?.me, isPrivate, navigate]);
+
+  return { loading, error, user: data?.me };
+};
+```
+
+<br />
+
+- pagination : 페이지 구분 훅 구현
+
+```typescript
+const Pagination: React.FC<PaginationProps> = ({
+  totalLength,
+  setPage,
+  page,
+}) => {
+  const totalPage = totalLength ? totalLength : 1;
+  const offset = 5;
+
+  const onNext = () => {
+    setPage((prev) => (totalPage < offset ? prev : prev + 1));
+  };
+
+  const onBack = () => {
+    setPage((prev) => (prev === 1 ? 1 : prev - 1));
+  };
+```
+
+<br />
+
+- WindowSize : 윈도우 사이즈 변경 - 반응
+
+```typescript
+const WindowSize = () => {
+  const [windowSize, setWindowSize] = useState(0);
+
+  const handleSize = useCallback(() => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleSize);
+    return () => {
+      window.removeEventListener("resize", handleSize);
+    };
+  }, [handleSize, windowSize]);
+
+  useEffect(() => {
+    setWindowSize(window.innerWidth);
+  }, []);
+
+  return { windowSize };
+};
+```
+
+<br />
 
 ## Pages
 
@@ -144,6 +268,7 @@
 - 댓글 게시 및 삭제
 - 업로드 포토
 - 샵 수정 (포토 미리보기, 삭제)
+  <br />
 
 ### 🙋‍♂️ User
 
@@ -151,7 +276,14 @@
 - 아바타 업로드 (포토 미리보기)
 - 프로필 수정 (포토 미리보기, 삭제)
 - 회원정보 변경
+  <br />
 
 ## Code
 
 <a href="https://github.com/jangth0655/finder-client">🔥 GitHub</a>
+
+<br /><br />
+
+## 느낀점
+
+-
