@@ -1,19 +1,16 @@
 ![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=120&section=header&text=Finder&fontSize=70)
 
-<div align="center">
-    <br />
+<div>
     <div>
-      <img height="70" src="./src/assets/images/logo.jpeg" /> 
-    </div>
-    <br /><br />
-    <a display="block" href="https://finder-web.netlify.app/" >
+      <img style="border-radius:10px" height="70" src="./src/assets/images/logo.jpeg" /> 
+      <a display="block" href="https://finder-web.netlify.app/" >
       https://finder-web.netlify.app/
     </a>
+    </div>
     <br />
 </div>
 
-  </a>
-</div>
+<br /><br />
 
 ## Content
 
@@ -40,14 +37,17 @@
 ### Back-end
 
 - `Apollo-server`
+- `Express`
 - `Graphql`
-- `Postgres`
+- `PostgresSQL`
+- `Prisma`
+- `AWS S3`
+- code : <a>https://github.com/jangth0655/finder-server</a>
 
 ### Deploy
 
 - Client : `Netlify`
 - Server : `Heroku`
-- code : <a></a>
 
 ## Project
 
@@ -66,8 +66,8 @@
 
 - 유저네임, 이름, 이메일, 지역, 커리어, 비밀번호를 입력하여 로그인 할 수 있습니다.
 - 유저네임과 이메일은 필수조건이며, 중복이 불가하도록 하였습니다.(유니크)
-- 비밀번호는 `bcrypt`를 사용하여 해시화 되고 DB에 저장됩니다.
-- `jwt`를 통해 유저를 인증하여 로그인됩니다.
+- 로그인이 성공적인 경우 `Apollo client`의 `Reactive variable`를 통해 local state를 업데이트합니다.
+
   <br></br>
   <img height="500" src="./preview/login-preview.gif" />
 
@@ -159,7 +159,8 @@ useEffect(() => {
 - 유저는 유저가 게시한 샵과 "좋아요"한 샵을 확인할 수 있습니다.
 - 자신을 "팔로워"한 유저를 확인할 수 있습니다.
 - 해당 유저(로그인한 자기자신)만 프로필 수정페이지로 이동할 수 있습니다.
-- 다른 유저들이 "팔로워"할 수 있습니다.
+- 다른 유저들이 "팔로워"할 수 있습니다.  
+  → `Apollo client`를 통해 유저의 캐시를 수정하여 즉각적으로 UI를 업데이트합니다.
   <br /><br />
 
 > 8. 프로필 수정

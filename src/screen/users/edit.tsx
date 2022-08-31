@@ -23,8 +23,8 @@ const REMOVE_AVATAR_MUTATION = gql`
 `;
 
 const DELETE_ACCOUNT_MUTATION = gql`
-  mutation deleteAccount($id: Int!) {
-    deleteAccount(id: $id) {
+  mutation deleteAccount($id: Int!, $avatar: String) {
+    deleteAccount(id: $id, avatar: $avatar) {
       ok
       error
     }
@@ -169,7 +169,6 @@ const EditProfile: React.FC = () => {
       editProfile: { ok, error, username },
     } = data;
     if (ok && user?.id) {
-      console.log("editpage", username);
       navigate(`/users/profile/${user?.id}`, {
         state: { ok, username, id: user.id },
       });
@@ -246,8 +245,7 @@ const EditProfile: React.FC = () => {
       onCompleted: onDeleteAccountComplete,
     });
 
-  const onDeleteAccount = (id?: number) => {
-    console.log(id);
+  const onDeleteAccount = (id?: number, avatar?: string) => {
     window.confirm("Really???");
     if (deleteAccountLoading) return;
     deleteAccount({
@@ -317,7 +315,9 @@ const EditProfile: React.FC = () => {
               </Remove>
             ) : null}
             {user?.isMe && (
-              <DeleteAccount onClick={() => onDeleteAccount(user?.id)}>
+              <DeleteAccount
+                onClick={() => onDeleteAccount(user?.id, user.avatar)}
+              >
                 Delete Account
               </DeleteAccount>
             )}
