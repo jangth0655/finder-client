@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=rounded&color=auto&height=120&section=header&text=Finder&fontSize=70)
+![header](https://capsule-render.vercel.app/api?type=wave&color=auto&height=400&section=header&text=Finder&fontSize=70)
 
 <div>
     <div>
@@ -135,11 +135,50 @@ useEffect(() => {
 - 샵 상세페이지에서 샵의 지역, 사이트, 전화번호 등 확인 할 수 있습니다.
 - 업로드 한 유저네임을 클릭하여 유저의 프로필로 이동할 수 있습니다.
 - 샵에서 게시한 포토를 확인할 수 있습니다.
-- 샵에 대하여 유저들은 댓글을 게시 및 삭제를 할 수 있습니다.
+- 샵에 대하여 유저들은 댓글을 게시 및 삭제를 할 수 있습니다.  
+  → 댓글을 작성한다면, `Apollo client`를 통해 댓글을 캐시된 필드 값을 직접 생성합니다.  
+  → 댓글을 삭제한다면(본인), `Apollo client`를 통해 댓글을 캐시된 필드 값을 filter합니다.
 - 해당 `샵 유저`라면 사진을 업로드 할 수 있습니다.
 - 해당 `샵 유저`라면 샵 수정페이지로 이동할 수 있습니다.
-  <br /><br />
-  <img height="500" src="./preview/shopComment-preveiw.gif" />
+
+```typescript
+// 캐스 수정 → 댓글 생성
+  const createCommentUpdate = (cache:ApolloCache(any), result:any) => {
+    // ...
+     if (ok && user) {
+      newComment = {
+        __typename: "Comment",
+        createdAt: Date.now(),
+        id,
+        isMine: true,
+        comment,
+        user: { ...user },
+      };
+    }
+
+    cache.modify({
+      id: `Shop:${shopId}`,
+      fields: {
+        comments: (prev) => [...prev, newComment],
+      },
+    });
+  };
+// 댓글 삭제 (filter)
+      cache.modify({
+          id: `Shop:${shopId}`,
+          fields: {
+            comments: (prev, { readField }) => {
+              const newComments = prev.filter((comment: any) => {
+                return id !== readField("id", comment);
+              });
+              return newComments;
+            },
+          },
+        });
+```
+
+<br /><br />
+<img height="500" src="./preview/shopComment-preveiw.gif" />
 
 > 6. Edit Shop (샵 수정)
 
@@ -271,9 +310,9 @@ const WindowSize = () => {
 
 - Info
 - 게시한 포토
-- 댓글 게시 및 삭제
 - 업로드 포토
 - 샵 수정 (포토 미리보기, 삭제)
+- "좋아요" 기능 (즉각적인 반응)
   <br />
 
 ### 🙋‍♂️ User
@@ -284,6 +323,11 @@ const WindowSize = () => {
 - 회원정보 변경
   <br />
 
+### Comment
+
+- 댓글 작성 및 삭제
+- 즉각적인 반응
+
 ## Code
 
 <a href="https://github.com/jangth0655/finder-client">🔥 GitHub</a>
@@ -293,8 +337,8 @@ const WindowSize = () => {
 ## 느낀점
 
 ```
-클라이언트 부분에서 느낀점..
-익숙한 REST와 달리  apollo client를 활용하고 graphql을 통해 데이터를 받아오는 점에서 흥미로웠고 재밌었습니다. 하지만 앱을 구현에 있어서 익숙치 않아서 어려움점이 있었습니다.
+클라이언트 느낀점..
+자주 접해보았던 REST와 달리  apollo client를 활용하고 graphql을 통해 데이터를 받아오는 점에서 흥미로웠고 재밌었습니다. 하지만 앱을 구현에 있어서 익숙치 않아서 어려움점이 있었습니다.
 특히 아폴로 캐쉬를 조작하는 과정에서 fragment와 modify를 활용하는 어려움이 있었습니다.
 그래서 공식문서를 자세히 읽어보며(예제와 설명) 적용해나갔고, 부족한 부분은 구글링을 통해서 해결해 나갔습니다.
 이번 finder(앱이름)를 통해 graphql를 활용하여 서버와 데이터를 주고받는 것에 조금 익숙해지고,
