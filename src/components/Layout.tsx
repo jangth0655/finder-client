@@ -238,6 +238,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
   };
 
   const onProfile = (id?: number, username?: string) => {
+    if (!id && username) return;
     navigate(`/users/profile/${id}`, {
       state: {
         id,
