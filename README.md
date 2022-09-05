@@ -2,7 +2,7 @@
 
 <div>
     <div>
-      <img style="border-radius:10px" height="70" src="./src/assets/images/logo.jpeg" /> 
+      <img style="border-radius:10px" height="70" src="./src/assets/images/logo.jpeg" />  
       <a display="block" href="https://finder-web.netlify.app/" >
       https://finder-web.netlify.app/
     </a>
@@ -49,11 +49,14 @@
 - Client : `Netlify`
 - Server : `Heroku`
 
+---
+
 ## Project
 
 → 마음에 드는 샵을 홍보하거나 탐색하는 등 여러사람이 모여 자유롭게 커뮤니케이션 하는 공간입니다.
 
 ✓ 모든 `이미지는 AWS S3`의 버킷에 저장됩니다.
+<br /><br />
 
 > 네비게이션
 
@@ -68,8 +71,9 @@
 - 유저네임과 이메일은 필수조건이며, 중복이 불가하도록 하였습니다.(유니크)
 - 로그인이 성공적인 경우 `Apollo client`의 `Reactive variable`를 통해 local state를 업데이트합니다.
 
-  <br></br>
+  <br />
   <img height="500" src="./preview/login-preview.gif" />
+  <br></br>
 
 > 2. Shops
 
@@ -105,8 +109,10 @@ const favToggleUpdate = (cache: ApolloCache<any>, result: any) => {
 
 - shop이름(제목)으로 검색을 할 수 있습니다.
 - 관련된 shop들을 확인 할 수 있습니다.
-  <br /><br />
+
+  <br />
   <img height="500" src="./preview/search-preview.gif" />
+  <br /><br />
 
 > 4. 업로드
 
@@ -127,8 +133,9 @@ useEffect(() => {
 }, [image]);
 ```
 
-<br /><br />
+<br />
 <img height="500" src="./preview/upload-preveiw.gif" />
+<br /><br />
 
 > 5. About Shop (상세정보)
 
@@ -177,8 +184,9 @@ useEffect(() => {
         });
 ```
 
-<br /><br />
+<br />
 <img height="500" src="./preview/shopComment-preveiw.gif" />
+<br /><br />
 
 > 6. Edit Shop (샵 수정)
 
@@ -190,8 +198,10 @@ useEffect(() => {
 - 샵의 포토를 변경할 수 있고 삭제 할 수 있습니다.  
   → 삭제할 경우 기본 배경으로 설정됩니다.
 - 샵을 삭제할 수 있습니다.
-  <br /><br />
+
+  <br />
   <img height="500" src="./preview/editShop-preview.gif" />
+  <br /><br />
 
 > 7. 프로필
 
@@ -206,8 +216,10 @@ useEffect(() => {
 
 - 유저의 아바타와 유저의 정보를 수정할 수 있습니다.
 - 미리보기를 통해 아바타를 변경할 수 있습니다.
-  <br /><br />
+
+  <br />
   <img height="500" src="./preview/profile-preview.gif" />
+  <br /><br />
 
 > 9. 기타 훅 (share)
 
@@ -327,6 +339,8 @@ const WindowSize = () => {
 
 - 댓글 작성 및 삭제
 - 즉각적인 반응
+
+<br />
 
 ## Code
 
