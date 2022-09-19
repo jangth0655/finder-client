@@ -348,7 +348,7 @@ const WindowSize = () => {
 
 <br /><br />
 
-## 느낀점 (Client)
+## 느낀점 
 
 - REST와 달리 Graphql은 서버에서 필요한 데이터만 받아올 수 있다는 점에 흥미롭고 재밌었다.
 - `Apollo client`의 `useQuery`와 `useMutation`을 사용하여 서버와 상호작용 하는것을 좀 더 이해할 수 있었다.
